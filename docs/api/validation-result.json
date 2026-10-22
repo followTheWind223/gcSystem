@@ -1,0 +1,20 @@
+{
+  "contractVersion": "2.2.0",
+  "databaseVersion": "V006",
+  "openapi": "valid 3.0.3",
+  "operations": 69,
+  "schemas": 122,
+  "mappedDtoProperties": 587,
+  "completeResponseCases": 622,
+  "additionalExampleAndParameterChecks": 732,
+  "parseableJsonBlocksInDetailedDocs": 651,
+  "detailedDocOperationCoverage": {
+    "用户端接口详细说明.md": 29,
+    "管理端接口详细说明.md": 34,
+    "若依复用接口详细说明.md": 6
+  },
+  "requestLengthVsStorageCapacity": "passed",
+  "moneyConsistency": "passed",
+  "allDocumentedErrorCodesCovered": true,
+  "runtimeBusinessApiTests": "see docs/后端与后台验收.md; this file records static contract checks"
+}

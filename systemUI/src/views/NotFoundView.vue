@@ -1,0 +1,1 @@
+<template><div class="container not-found"><span class="eyebrow">LOST IN THE UNIVERSE</span><h1>404</h1><h2>这个页面暂时找不到了</h2><p>这个页面不存在，回到商城继续你的冒险吧。</p><RouterLink to="/" class="btn">返回商城</RouterLink></div></template>

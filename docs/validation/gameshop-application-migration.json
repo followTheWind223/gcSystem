@@ -1,0 +1,15 @@
+{
+  "database": "gc_system",
+  "tablesBefore": 31,
+  "tablesAfter": 46,
+  "mallTables": 15,
+  "applied": [
+    "V001__create_mall_tables.sql",
+    "V002__register_order_expiry_job.sql",
+    "V003__register_admin_menus.sql"
+  ],
+  "adminPages": 7,
+  "expiryJobs": 1,
+  "demoDataImported": false,
+  "backupFile": "gc_system_before_gameshop_20261022_221355.sql"
+}

@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-23",
+  "contractVersion": "3.0.0",
+  "databaseVersion": "V007",
+  "http": {
+    "passed": 40,
+    "checks": [
+      "V007 preserves all legacy member links and removes duplicate password storage",
+      "ordinary role has no menus or department grants",
+      "bad and consumed captchas reject registration",
+      "auth_user_a registered",
+      "auth_user_a cannot request admin role",
+      "auth_user_b registered",
+      "auth_user_b cannot request admin role",
+      "duplicate username rejected",
+      "native getInfo exposes only ordinary role and no admin permissions",
+      "concurrent first requests bind one member profile",
+      "member and system IDs are explicitly associated",
+      "ordinary account denied /getRouters",
+      "ordinary account denied /system/user/list",
+      "ordinary account denied /system/role/list",
+      "ordinary account denied /system/user/profile",
+      "ordinary account denied /monitor/online/list",
+      "ordinary account denied /tool/gen/list",
+      "ordinary account denied /mall/members",
+      "ordinary account denied /mall/props",
+      "ordinary account denied /mall/dashboard",
+      "admin still allowed /getRouters",
+      "admin still allowed /mall/props",
+      "admin still allowed /api/mall/me",
+      "admin still allowed /api/mall/cart/items",
+      "legacy password and member primary key retained",
+      "legacy order remains owned by migrated account",
+      "other user cannot read legacy order",
+      "cart ownership enforced with native token",
+      "native account can create an owned order",
+      "cross-account order access denied",
+      "owned order cancellation still works",
+      "profile update reaches sys_user",
+      "password change uses RuoYi password",
+      "old session invalidated after password change",
+      "old session invalidated after password change",
+      "backend account disable revokes storefront access",
+      "native logout invalidates protected access",
+      "retired authentication endpoint cannot issue identities /api/mall/sessions",
+      "retired authentication endpoint cannot issue identities /api/mall/members",
+      "retired authentication endpoint cannot issue identities /api/mall/password-resets"
+    ]
+  },
+  "browser": {
+    "passed": true,
+    "paths": [
+      "/src/api/http.js",
+      "/src/api/mall.js",
+      "/api/auth/captchaImage",
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/getInfo",
+      "/api/mall/cart/items",
+      "/api/mall/me",
+      "/api/mall/home",
+      "/api/mall/categories",
+      "/api/mall/media/0123456789abcdef0123456789abcdef.png"
+    ],
+    "errors": []
+  },
+  "ordinaryAdminLoginRetry": true,
+  "contract": {
+    "operations": 64,
+    "resolvedReferences": 691,
+    "validatedExamples": 596,
+    "errors": []
+  },
+  "builds": {
+    "backend": "passed, 4 Java tests",
+    "storefront": "passed",
+    "backoffice": "passed"
+  },
+  "applicationMigration": {
+    "backupCompleted": true,
+    "legacyMembersMigrated": 1,
+    "legacyPasswordsPreserved": true,
+    "ordersPreserved": 1,
+    "cartRowsPreserved": 1,
+    "productsPreserved": 6,
+    "commonMenuCount": 0,
+    "repeatRunSkipped": true,
+    "backendRestarted": true
+  },
+  "applicationSmoke": [
+    "native captcha through both proxies",
+    "storefront home",
+    "native admin login",
+    "native getInfo without password",
+    "storefront member profile",
+    "backoffice routes",
+    "native logout"
+  ]
+}

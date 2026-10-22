@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-23",
+  "backendBuild": "passed; 4 existing architecture/transaction checks",
+  "adminBuild": "npm run build:prod passed",
+  "storefrontBuild": "npm run build passed",
+  "storefrontUnitTests": 4,
+  "storefrontE2ECases": 16,
+  "realCheckoutFlow": {
+    "passed": [
+      "真实首页、商品详情和图片通过 Vite 代理加载；品牌与非演示模式正确",
+      "开启图形验证码的邮箱申请、注册、登录和受保护跳回",
+      "购物车数量和报价99.80元、真实下单、模拟失败与成功支付",
+      "后台交付后用户刷新已完成、提交一次评价、我的评价回读",
+      "立即购买和用户取消订单",
+      "个人资料与头像持久化、修改密码后重新登录、退出会话",
+      "邮箱找回密码、新密码登录、订单持久化、无持久化令牌及刷新重新登录"
+    ],
+    "runtimeErrors": []
+  },
+  "emailPolicyOffRegression": "passed (4 HTTP/browser cases plus persisted status check)",
+  "applicationMigrationReport": "game-servers-migration.json",
+  "backendAndAdminReport": "game-servers-integration.json",
+  "visualAndApplicationReadOnlyReport": "game-servers-ui.json",
+  "applicationBackendRestarted": true
+}

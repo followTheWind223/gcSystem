@@ -1,0 +1,2218 @@
+{
+  "version": "V007",
+  "contractVersion": "3.0.0",
+  "mysqlMinimum": "8.0.16",
+  "tables": [
+    {
+      "name": "mall_schema_history",
+      "title": "商城增量脚本版本记录",
+      "columns": [
+        {
+          "name": "version",
+          "type": "VARCHAR(16)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "已经完整执行的迁移版本，例如 V001",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "script_name",
+          "type": "VARCHAR(128)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "不可改写的脚本文件名",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "description",
+          "type": "VARCHAR(200)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "迁移说明",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "installed_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "该脚本全部语句完成的记录时间",
+          "api": "内部字段，不直接返回"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`version`)"
+      ],
+      "checks": [],
+      "business": "只在迁移末尾写入版本。MySQL DDL 不是整份脚本事务；出现失败必须停止并检查已创建对象，不能只靠版本表判断没有任何变化。"
+    },
+    {
+      "name": "mall_media",
+      "title": "商城受控公开图片",
+      "columns": [
+        {
+          "name": "media_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "自增主键；应用只使用正数，接口序列化为字符串",
+          "api": "仅内部关系键；ImageUpload 不暴露 mediaId"
+        },
+        {
+          "name": "stored_name",
+          "type": "VARCHAR(37) CHARACTER SET ascii COLLATE ascii_bin",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "32 位小写十六进制随机名加 .png/.jpg/.webp",
+          "api": "ImageUpload.fileName；公开图片路径参数 fileName"
+        },
+        {
+          "name": "access_path",
+          "type": "VARCHAR(80)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": "CONCAT('/api/mall/media/', stored_name)",
+          "description": "从文件名生成同源 URL，不保存域名或磁盘绝对路径",
+          "api": "ImageUpload.url / 各 DTO 的图片 URL"
+        },
+        {
+          "name": "relative_path",
+          "type": "VARCHAR(128)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "相对 UPLOAD_PATH 的服务器生成路径，例如 mall/2026/10/22/随机名.png；服务端规范化后必须在根目录内",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "original_name",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "去除目录和控制字符后的原始文件名",
+          "api": "ImageUpload.originalName"
+        },
+        {
+          "name": "mime_type",
+          "type": "VARCHAR(32)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "重新编码后的实际 MIME：image/png、image/jpeg、image/webp",
+          "api": "ImageUpload.mimeType"
+        },
+        {
+          "name": "file_size",
+          "type": "INT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "编码后字节数，1–5242880；头像额外限制为 2097152",
+          "api": "ImageUpload.size"
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "图片宽度，1–4096 像素",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "图片高度，1–4096 像素",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "sha256",
+          "type": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "编码后文件 SHA-256；用于完整性核对，不作为唯一键",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "uploader_type",
+          "type": "VARCHAR(6)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "ADMIN 或 MEMBER；与 uploader_id 组成逻辑引用",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "uploader_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "按 uploader_type 关联 sys_user.user_id 或 mall_member.member_id，服务层验证，非物理外键",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "uploader_name",
+          "type": "VARCHAR(64)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "上传者账号快照，账号之后更名/删除不改历史",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "上传完成时间",
+          "api": "内部字段，不直接返回"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`media_id`)",
+        "UNIQUE KEY `uk_media_name` (`stored_name`)",
+        "UNIQUE KEY `uk_media_path` (`access_path`)",
+        "KEY `idx_media_uploader` (`uploader_type`,`uploader_id`,`create_time`)"
+      ],
+      "checks": [
+        [
+          "ck_media_type",
+          "mime_type IN ('image/png','image/jpeg','image/webp')"
+        ],
+        [
+          "ck_media_limits",
+          "file_size BETWEEN 1 AND 5242880 AND width BETWEEN 1 AND 4096 AND height BETWEEN 1 AND 4096"
+        ],
+        [
+          "ck_media_uploader",
+          "uploader_type IN ('ADMIN','MEMBER') AND uploader_id > 0"
+        ],
+        [
+          "ck_media_path",
+          "relative_path LIKE 'mall/%'"
+        ]
+      ],
+      "business": "无图片删除接口。所有商品/头像写入 URL 必须反查此表；类型、文件名格式、像素解码和路径穿越还需服务层校验。被交易快照引用的图片保留，不自动物理清理。"
+    },
+    {
+      "name": "mall_member",
+      "title": "若依账号关联的商城业务档案",
+      "columns": [
+        {
+          "name": "member_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "自增主键；应用只使用正数，接口序列化为字符串",
+          "api": "Member.memberId / AdminMember.memberId"
+        },
+        {
+          "name": "username",
+          "type": "VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "若依用户名的业务快照；响应以关联账号为准",
+          "api": "username"
+        },
+        {
+          "name": "password_hash",
+          "type": "CHAR(60) CHARACTER SET ascii COLLATE ascii_bin",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "V007 后清空；密码仅保存在 sys_user.password",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "nickname",
+          "type": "VARCHAR(30)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "2–30 字符的展示昵称，注册省略时采用 username",
+          "api": "nickname / Reviewer.displayName"
+        },
+        {
+          "name": "avatar_media_id",
+          "type": "BIGINT",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "头像关联受控媒体；默认无头像",
+          "api": "通过 mall_media.access_path 得到 avatarUrl"
+        },
+        {
+          "name": "email",
+          "type": "VARCHAR(254) COLLATE utf8mb4_bin",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "联系邮箱快照，不唯一、不作为认证凭据",
+          "api": "Member.email；后台只返回派生 emailMasked"
+        },
+        {
+          "name": "email_verified",
+          "type": "TINYINT",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "generated": null,
+          "description": "0 未验证，1 已验证；邮箱验证关闭时注册写 0，开启且验码成功写 1",
+          "api": "Member.emailVerified（转 boolean）"
+        },
+        {
+          "name": "phone_number",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "可空联系方式；非空时 7–20 字符，格式由 DTO 校验",
+          "api": "Member.phoneNumber；后台派生 phoneMasked"
+        },
+        {
+          "name": "status",
+          "type": "CHAR(1)",
+          "nullable": false,
+          "default": "'0'",
+          "extra": "",
+          "generated": null,
+          "description": "0 正常，1 禁用，与商品状态含义相反",
+          "api": "AdminMember.status"
+        },
+        {
+          "name": "session_version",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "generated": null,
+          "description": "历史会员会话版本，统一认证不依赖此字段",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "status_reason",
+          "type": "VARCHAR(200)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "最近一次启停原因；完整操作历史另留若依操作日志",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "last_login_time",
+          "type": "DATETIME(3)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "最近成功登录时间，首次未登录为空",
+          "api": "AdminMember.lastLoginAt"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "记录创建时间，数据库会话为 +08:00",
+          "api": "createdAt"
+        },
+        {
+          "name": "update_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "ON UPDATE CURRENT_TIMESTAMP(3)",
+          "generated": null,
+          "description": "记录最近修改时间；更新行时由数据库刷新",
+          "api": "updatedAt（仅对应 DTO 中有该字段时返回）"
+        },
+        {
+          "name": "sys_user_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "唯一关联若依 sys_user.user_id",
+          "api": "内部关联，不直接返回"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`member_id`)",
+        "UNIQUE KEY `uk_member_username` (`username`)",
+        "KEY `idx_member_status_time` (`status`,`create_time`,`member_id`)",
+        "CONSTRAINT `fk_member_avatar` FOREIGN KEY (`avatar_media_id`) REFERENCES `mall_media` (`media_id`) ON DELETE RESTRICT ON UPDATE RESTRICT",
+        "UNIQUE KEY `uk_member_sys_user` (`sys_user_id`)",
+        "CONSTRAINT `fk_member_sys_user` FOREIGN KEY (`sys_user_id`) REFERENCES `sys_user` (`user_id`)"
+      ],
+      "checks": [
+        [
+          "ck_member_nickname",
+          "CHAR_LENGTH(nickname) BETWEEN 2 AND 30"
+        ],
+        [
+          "ck_member_status",
+          "status IN ('0','1') AND email_verified IN (0,1) AND session_version >= 0"
+        ],
+        [
+          "ck_member_disabled_reason",
+          "status = '0' OR (status_reason IS NOT NULL AND CHAR_LENGTH(status_reason) BETWEEN 2 AND 200)"
+        ]
+      ],
+      "business": "sys_user 负责认证，sys_user_id 唯一关联；member_id 保留交易归属，不向客户端开放身份绑定。"
+    },
+    {
+      "name": "mall_game_category",
+      "title": "单层游戏分类",
+      "columns": [
+        {
+          "name": "category_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "自增主键；应用只使用正数，接口序列化为字符串",
+          "api": "categoryId"
+        },
+        {
+          "name": "name",
+          "type": "VARCHAR(30)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "trim 后 2–30 字符；未删除分类中名称按 utf8mb4_unicode_ci 唯一",
+          "api": "name"
+        },
+        {
+          "name": "icon_media_id",
+          "type": "BIGINT",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "分类图标，可空",
+          "api": "关联媒体 access_path -> iconUrl"
+        },
+        {
+          "name": "sort",
+          "type": "INT",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "generated": null,
+          "description": "展示排序，0–9999，较小在前",
+          "api": "sort"
+        },
+        {
+          "name": "status",
+          "type": "CHAR(1)",
+          "nullable": false,
+          "default": "'0'",
+          "extra": "",
+          "generated": null,
+          "description": "0 停用/下架，1 启用/上架",
+          "api": "status"
+        },
+        {
+          "name": "recommended",
+          "type": "TINYINT",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "generated": null,
+          "description": "0 普通，1 首页热门推荐",
+          "api": "recommended（转 boolean）"
+        },
+        {
+          "name": "version",
+          "type": "INT",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "generated": null,
+          "description": "乐观锁版本；插入为 0，每次合法修改递增；库存操作也递增商品版本",
+          "api": "version"
+        },
+        {
+          "name": "del_flag",
+          "type": "CHAR(1)",
+          "nullable": false,
+          "default": "'0'",
+          "extra": "",
+          "generated": null,
+          "description": "0 正常，2 软删除；公开查询必须过滤为 0",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "active_name",
+          "type": "VARCHAR(30)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": "CASE WHEN del_flag = '0' THEN name ELSE NULL END",
+          "description": "仅未删除行生成名称；软删除行生成 NULL，允许删除后重建同名分类",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "记录创建时间，数据库会话为 +08:00",
+          "api": "createdAt"
+        },
+        {
+          "name": "update_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "ON UPDATE CURRENT_TIMESTAMP(3)",
+          "generated": null,
+          "description": "记录最近修改时间；更新行时由数据库刷新",
+          "api": "updatedAt（仅对应 DTO 中有该字段时返回）"
+        },
+        {
+          "name": "create_by",
+          "type": "VARCHAR(64)",
+          "nullable": false,
+          "default": "''",
+          "extra": "",
+          "generated": null,
+          "description": "创建操作者账号快照，不作为鉴权依据",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "update_by",
+          "type": "VARCHAR(64)",
+          "nullable": false,
+          "default": "''",
+          "extra": "",
+          "generated": null,
+          "description": "最后修改操作者账号快照",
+          "api": "内部字段，不直接返回"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`category_id`)",
+        "UNIQUE KEY `uk_category_active_name` (`active_name`)",
+        "KEY `idx_category_portal` (`del_flag`,`status`,`recommended`,`sort`,`category_id`)",
+        "CONSTRAINT `fk_category_icon` FOREIGN KEY (`icon_media_id`) REFERENCES `mall_media` (`media_id`) ON DELETE RESTRICT ON UPDATE RESTRICT"
+      ],
+      "checks": [
+        [
+          "ck_category_name",
+          "CHAR_LENGTH(name) BETWEEN 2 AND 30"
+        ],
+        [
+          "ck_category_values",
+          "status IN ('0','1') AND del_flag IN ('0','2') AND recommended IN (0,1) AND version >= 0 AND sort BETWEEN 0 AND 9999"
+        ],
+        [
+          "ck_category_deleted",
+          "del_flag = '0' OR status = '0'"
+        ]
+      ],
+      "business": "删除为软删除；存在任意未删除商品时禁止删除。分类变更与下单按分类 ID→商品 ID 的顺序加锁，避免停用与下单错过校验。"
+    },
+    {
+      "name": "mall_prop",
+      "title": "单商品单库存道具",
+      "columns": [
+        {
+          "name": "prop_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "自增主键；应用只使用正数，接口序列化为字符串",
+          "api": "propId"
+        },
+        {
+          "name": "category_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "所属分类，写入时必须是未删除分类",
+          "api": "categoryId"
+        },
+        {
+          "name": "name",
+          "type": "VARCHAR(80)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "商品名称，2–80 字符",
+          "api": "PropSummary.name / 历史快照来源"
+        },
+        {
+          "name": "cover_media_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "封面媒体，服务层保证也在图片列表中",
+          "api": "关联媒体 access_path -> coverUrl"
+        },
+        {
+          "name": "price",
+          "type": "DECIMAL(12,2)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "当前售价，大于 0；接口两位小数字符串",
+          "api": "price / QuoteItem.unitPrice"
+        },
+        {
+          "name": "original_price",
+          "type": "DECIMAL(12,2)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "可空划线价，非空时不小于售价",
+          "api": "originalPrice"
+        },
+        {
+          "name": "stock",
+          "type": "INT",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "generated": null,
+          "description": "当前可售库存，0–1000000000；下单扣减，取消回补，支付不再扣",
+          "api": "stock；仅创建 initialStock，其他写入走独立库存动作"
+        },
+        {
+          "name": "sales",
+          "type": "INT",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "generated": null,
+          "description": "成功支付的累计数量，只在首次支付成功时增加",
+          "api": "sales"
+        },
+        {
+          "name": "detail_html",
+          "type": "MEDIUMTEXT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "清洗后的富文本，最多 20000 字符；MEDIUMTEXT 可容纳 utf8mb4 的完整字符容量",
+          "api": "detailHtml"
+        },
+        {
+          "name": "spec_json",
+          "type": "JSON",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "最多 20 个 {name,value} 展示规格，不是 SKU",
+          "api": "specs"
+        },
+        {
+          "name": "delivery_fields_json",
+          "type": "JSON",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "1–3 个唯一字段名：gameAccount/serverName/roleName；枚举由服务层校验",
+          "api": "deliveryFields"
+        },
+        {
+          "name": "status",
+          "type": "CHAR(1)",
+          "nullable": false,
+          "default": "'0'",
+          "extra": "",
+          "generated": null,
+          "description": "0 停用/下架，1 启用/上架",
+          "api": "status"
+        },
+        {
+          "name": "on_sale_time",
+          "type": "DATETIME(3)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "最近一次上架时间；从未上架可空，上架时必须有值",
+          "api": "onSaleAt"
+        },
+        {
+          "name": "version",
+          "type": "INT",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "generated": null,
+          "description": "乐观锁版本；插入为 0，每次合法修改递增；库存操作也递增商品版本",
+          "api": "version"
+        },
+        {
+          "name": "del_flag",
+          "type": "CHAR(1)",
+          "nullable": false,
+          "default": "'0'",
+          "extra": "",
+          "generated": null,
+          "description": "0 正常，2 软删除；公开查询必须过滤为 0",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "记录创建时间，数据库会话为 +08:00",
+          "api": "createdAt"
+        },
+        {
+          "name": "update_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "ON UPDATE CURRENT_TIMESTAMP(3)",
+          "generated": null,
+          "description": "记录最近修改时间；更新行时由数据库刷新",
+          "api": "updatedAt（仅对应 DTO 中有该字段时返回）"
+        },
+        {
+          "name": "create_by",
+          "type": "VARCHAR(64)",
+          "nullable": false,
+          "default": "''",
+          "extra": "",
+          "generated": null,
+          "description": "创建操作者账号快照，不作为鉴权依据",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "update_by",
+          "type": "VARCHAR(64)",
+          "nullable": false,
+          "default": "''",
+          "extra": "",
+          "generated": null,
+          "description": "最后修改操作者账号快照",
+          "api": "内部字段，不直接返回"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`prop_id`)",
+        "KEY `idx_prop_new` (`del_flag`,`status`,`on_sale_time` DESC,`prop_id` DESC)",
+        "KEY `idx_prop_category_new` (`category_id`,`del_flag`,`status`,`on_sale_time` DESC,`prop_id` DESC)",
+        "KEY `idx_prop_price` (`del_flag`,`status`,`price`,`prop_id`)",
+        "KEY `idx_prop_sales` (`del_flag`,`status`,`sales` DESC,`prop_id` DESC)",
+        "CONSTRAINT `fk_prop_category` FOREIGN KEY (`category_id`) REFERENCES `mall_game_category` (`category_id`) ON DELETE RESTRICT ON UPDATE RESTRICT",
+        "CONSTRAINT `fk_prop_cover` FOREIGN KEY (`cover_media_id`) REFERENCES `mall_media` (`media_id`) ON DELETE RESTRICT ON UPDATE RESTRICT"
+      ],
+      "checks": [
+        [
+          "ck_prop_money",
+          "price > 0 AND (original_price IS NULL OR original_price >= price)"
+        ],
+        [
+          "ck_prop_stock",
+          "stock BETWEEN 0 AND 1000000000 AND sales BETWEEN 0 AND 2147483647 AND version >= 0"
+        ],
+        [
+          "ck_prop_text",
+          "CHAR_LENGTH(name) BETWEEN 2 AND 80 AND CHAR_LENGTH(detail_html) <= 20000"
+        ],
+        [
+          "ck_prop_json",
+          "JSON_TYPE(spec_json) = 'ARRAY' AND JSON_LENGTH(spec_json) <= 20 AND JSON_TYPE(delivery_fields_json) = 'ARRAY' AND JSON_LENGTH(delivery_fields_json) BETWEEN 1 AND 3"
+        ],
+        [
+          "ck_prop_state",
+          "status IN ('0','1') AND del_flag IN ('0','2') AND (status = '0' OR on_sale_time IS NOT NULL) AND (del_flag = '0' OR status = '0')"
+        ]
+      ],
+      "business": "普通商品编辑不能写 stock/sales。软删除仍保留行，历史未支付订单可支付，取消时仍可回补。images 与 cover 的一致性由商品服务在同一事务校验。"
+    },
+    {
+      "name": "mall_prop_image",
+      "title": "商品多图关联",
+      "columns": [
+        {
+          "name": "image_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "自增主键；应用只使用正数，接口序列化为字符串",
+          "api": "内部键，PropImage DTO 不暴露"
+        },
+        {
+          "name": "prop_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "所属商品",
+          "api": "商品路径参数 propId"
+        },
+        {
+          "name": "media_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "图片媒体",
+          "api": "关联 access_path -> images[].url"
+        },
+        {
+          "name": "sort",
+          "type": "INT",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "generated": null,
+          "description": "0–9999，同排序时 image_id 升序",
+          "api": "images[].sort"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "关联创建时间",
+          "api": "内部字段，不直接返回"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`image_id`)",
+        "UNIQUE KEY `uk_prop_image_media` (`prop_id`,`media_id`)",
+        "KEY `idx_prop_image_sort` (`prop_id`,`sort`,`image_id`)",
+        "CONSTRAINT `fk_prop_image_prop` FOREIGN KEY (`prop_id`) REFERENCES `mall_prop` (`prop_id`) ON DELETE RESTRICT ON UPDATE RESTRICT",
+        "CONSTRAINT `fk_prop_image_media` FOREIGN KEY (`media_id`) REFERENCES `mall_media` (`media_id`) ON DELETE RESTRICT ON UPDATE RESTRICT"
+      ],
+      "checks": [
+        [
+          "ck_prop_image_sort",
+          "sort BETWEEN 0 AND 9999"
+        ]
+      ],
+      "business": "商品创建/编辑时整体维护 1–10 张图；替换关系不删除媒体实体，不改变历史订单封面快照。"
+    },
+    {
+      "name": "mall_banner",
+      "title": "首页内部商品轮播",
+      "columns": [
+        {
+          "name": "banner_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "自增主键；应用只使用正数，接口序列化为字符串",
+          "api": "bannerId"
+        },
+        {
+          "name": "title",
+          "type": "VARCHAR(60)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "1–60 字符标题",
+          "api": "title"
+        },
+        {
+          "name": "image_media_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "轮播图媒体",
+          "api": "关联 access_path -> imageUrl"
+        },
+        {
+          "name": "target_prop_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "内部目标商品，不允许任意外链",
+          "api": "targetPropId"
+        },
+        {
+          "name": "sort",
+          "type": "INT",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "generated": null,
+          "description": "0–9999 排序值",
+          "api": "sort"
+        },
+        {
+          "name": "status",
+          "type": "CHAR(1)",
+          "nullable": false,
+          "default": "'0'",
+          "extra": "",
+          "generated": null,
+          "description": "0 停用/下架，1 启用/上架",
+          "api": "status"
+        },
+        {
+          "name": "version",
+          "type": "INT",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "generated": null,
+          "description": "乐观锁版本；插入为 0，每次合法修改递增；库存操作也递增商品版本",
+          "api": "version"
+        },
+        {
+          "name": "del_flag",
+          "type": "CHAR(1)",
+          "nullable": false,
+          "default": "'0'",
+          "extra": "",
+          "generated": null,
+          "description": "0 正常，2 软删除；公开查询必须过滤为 0",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "记录创建时间，数据库会话为 +08:00",
+          "api": "createdAt"
+        },
+        {
+          "name": "update_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "ON UPDATE CURRENT_TIMESTAMP(3)",
+          "generated": null,
+          "description": "记录最近修改时间；更新行时由数据库刷新",
+          "api": "updatedAt（仅对应 DTO 中有该字段时返回）"
+        },
+        {
+          "name": "create_by",
+          "type": "VARCHAR(64)",
+          "nullable": false,
+          "default": "''",
+          "extra": "",
+          "generated": null,
+          "description": "创建操作者账号快照，不作为鉴权依据",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "update_by",
+          "type": "VARCHAR(64)",
+          "nullable": false,
+          "default": "''",
+          "extra": "",
+          "generated": null,
+          "description": "最后修改操作者账号快照",
+          "api": "内部字段，不直接返回"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`banner_id`)",
+        "KEY `idx_banner_portal` (`del_flag`,`status`,`sort`,`banner_id`)",
+        "CONSTRAINT `fk_banner_image` FOREIGN KEY (`image_media_id`) REFERENCES `mall_media` (`media_id`) ON DELETE RESTRICT ON UPDATE RESTRICT",
+        "CONSTRAINT `fk_banner_target` FOREIGN KEY (`target_prop_id`) REFERENCES `mall_prop` (`prop_id`) ON DELETE RESTRICT ON UPDATE RESTRICT"
+      ],
+      "checks": [
+        [
+          "ck_banner_values",
+          "CHAR_LENGTH(title) BETWEEN 1 AND 60 AND sort BETWEEN 0 AND 9999 AND version >= 0 AND status IN ('0','1') AND del_flag IN ('0','2') AND (del_flag = '0' OR status = '0')"
+        ]
+      ],
+      "business": "公开轮播还需目标商品未删除/上架且分类启用。后台可预先关联未上架商品，但公开查询会隐藏该轮播。"
+    },
+    {
+      "name": "mall_cart_item",
+      "title": "当前购物车项目",
+      "columns": [
+        {
+          "name": "cart_item_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "自增主键；应用只使用正数，接口序列化为字符串",
+          "api": "cartItemId"
+        },
+        {
+          "name": "member_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "会员归属，只从认证上下文取得",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "prop_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "关联商品，失效时仍保留购物车行",
+          "api": "propId"
+        },
+        {
+          "name": "quantity",
+          "type": "TINYINT UNSIGNED",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "1–99，POST 是增量，PUT 是绝对值",
+          "api": "quantity"
+        },
+        {
+          "name": "checked",
+          "type": "TINYINT",
+          "nullable": false,
+          "default": "1",
+          "extra": "",
+          "generated": null,
+          "description": "0 未勾选，1 勾选；不是结算的隐式范围",
+          "api": "checked（转 boolean）"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "记录创建时间，数据库会话为 +08:00",
+          "api": "createdAt"
+        },
+        {
+          "name": "update_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "ON UPDATE CURRENT_TIMESTAMP(3)",
+          "generated": null,
+          "description": "记录最近修改时间；更新行时由数据库刷新",
+          "api": "updatedAt（仅对应 DTO 中有该字段时返回）"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`cart_item_id`)",
+        "UNIQUE KEY `uk_cart_member_prop` (`member_id`,`prop_id`)",
+        "KEY `idx_cart_member_updated` (`member_id`,`update_time` DESC,`cart_item_id` DESC)",
+        "CONSTRAINT `fk_cart_member` FOREIGN KEY (`member_id`) REFERENCES `mall_member` (`member_id`) ON DELETE RESTRICT ON UPDATE RESTRICT",
+        "CONSTRAINT `fk_cart_prop` FOREIGN KEY (`prop_id`) REFERENCES `mall_prop` (`prop_id`) ON DELETE RESTRICT ON UPDATE RESTRICT"
+      ],
+      "checks": [
+        [
+          "ck_cart_values",
+          "quantity BETWEEN 1 AND 99 AND checked IN (0,1)"
+        ]
+      ],
+      "business": "删除购物车行允许物理删除；交易和库存不以购物车行作为唯一事实。availability/subtotal/summary 全部通过实时关联计算，不存旧金额。"
+    },
+    {
+      "name": "mall_order",
+      "title": "不可物理删除的订单主表",
+      "columns": [
+        {
+          "name": "order_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "自增主键；应用只使用正数，接口序列化为字符串",
+          "api": "orderId"
+        },
+        {
+          "name": "order_no",
+          "type": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "服务器生成的 16–40 位大写字母数字订单号，全局唯一",
+          "api": "orderNo"
+        },
+        {
+          "name": "member_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "下单会员，构成订单归属；从认证上下文取得",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "source",
+          "type": "VARCHAR(6)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "DIRECT 或 CART，来自报价快照",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "request_key",
+          "type": "CHAR(36) CHARACTER SET ascii COLLATE ascii_bin",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "规范化小写 UUID；同会员同键永不重复建单",
+          "api": "CreateOrderRequest.requestKey"
+        },
+        {
+          "name": "request_hash",
+          "type": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "规范化 quoteToken/交付字段/备注的 SHA-256，仅用于精确重放，不保存原始令牌",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "total_amount",
+          "type": "DECIMAL(12,2)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "各明细 subtotal 之和，大于 0，由服务端计算",
+          "api": "totalAmount"
+        },
+        {
+          "name": "total_quantity",
+          "type": "SMALLINT UNSIGNED",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "各明细数量之和，1–4950",
+          "api": "totalQuantity"
+        },
+        {
+          "name": "item_count",
+          "type": "TINYINT UNSIGNED",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "不同商品明细行数，1–50",
+          "api": "itemCount"
+        },
+        {
+          "name": "currency",
+          "type": "CHAR(3)",
+          "nullable": false,
+          "default": "'CNY'",
+          "extra": "",
+          "generated": null,
+          "description": "首版固定人民币",
+          "api": "currency"
+        },
+        {
+          "name": "status",
+          "type": "CHAR(1)",
+          "nullable": false,
+          "default": "'1'",
+          "extra": "",
+          "generated": null,
+          "description": "1 待支付，2 已支付，3 已取消，4 已完成",
+          "api": "status"
+        },
+        {
+          "name": "delivery_info_json",
+          "type": "JSON",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "本单交付信息快照，三字段可空：gameAccount/serverName/roleName；禁止存游戏密码",
+          "api": "deliveryInfo"
+        },
+        {
+          "name": "remark",
+          "type": "VARCHAR(200)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "买家备注，trim 后空白归 null",
+          "api": "remark"
+        },
+        {
+          "name": "cancel_reason",
+          "type": "VARCHAR(200)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "取消原因，取消状态必填",
+          "api": "cancelReason"
+        },
+        {
+          "name": "expire_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "创建后默认 30 分钟，过期不可支付",
+          "api": "expiresAt"
+        },
+        {
+          "name": "paid_time",
+          "type": "DATETIME(3)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "首次成功支付时间",
+          "api": "paidAt"
+        },
+        {
+          "name": "cancelled_time",
+          "type": "DATETIME(3)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "实际取消/关单时间",
+          "api": "cancelledAt"
+        },
+        {
+          "name": "completed_time",
+          "type": "DATETIME(3)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "登记交付并完成的时间",
+          "api": "completedAt"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "记录创建时间，数据库会话为 +08:00",
+          "api": "createdAt"
+        },
+        {
+          "name": "update_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "ON UPDATE CURRENT_TIMESTAMP(3)",
+          "generated": null,
+          "description": "记录最近修改时间；更新行时由数据库刷新",
+          "api": "updatedAt（仅对应 DTO 中有该字段时返回）"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`order_id`)",
+        "UNIQUE KEY `uk_order_no` (`order_no`)",
+        "UNIQUE KEY `uk_order_member_request` (`member_id`,`request_key`)",
+        "UNIQUE KEY `uk_order_owner` (`order_id`,`member_id`)",
+        "KEY `idx_order_member_time` (`member_id`,`create_time` DESC,`order_id` DESC)",
+        "KEY `idx_order_member_state_time` (`member_id`,`status`,`create_time` DESC,`order_id` DESC)",
+        "KEY `idx_order_expiry` (`status`,`expire_time`,`order_id`)",
+        "KEY `idx_order_admin_time` (`create_time` DESC,`order_id` DESC)",
+        "CONSTRAINT `fk_order_member` FOREIGN KEY (`member_id`) REFERENCES `mall_member` (`member_id`) ON DELETE RESTRICT ON UPDATE RESTRICT"
+      ],
+      "checks": [
+        [
+          "ck_order_money_counts",
+          "total_amount > 0 AND total_quantity BETWEEN 1 AND 4950 AND item_count BETWEEN 1 AND 50"
+        ],
+        [
+          "ck_order_source",
+          "source IN ('DIRECT','CART') AND currency = 'CNY' AND CHAR_LENGTH(request_key) = 36 AND CHAR_LENGTH(request_hash) = 64 AND JSON_TYPE(delivery_info_json) = 'OBJECT'"
+        ],
+        [
+          "ck_order_time",
+          "expire_time > create_time AND (paid_time IS NULL OR (paid_time >= create_time AND paid_time < expire_time)) AND (cancelled_time IS NULL OR cancelled_time >= create_time) AND (completed_time IS NULL OR completed_time >= paid_time)"
+        ],
+        [
+          "ck_order_state_times",
+          "(status = '1' AND paid_time IS NULL AND cancelled_time IS NULL AND completed_time IS NULL) OR (status = '2' AND paid_time IS NOT NULL AND cancelled_time IS NULL AND completed_time IS NULL) OR (status = '3' AND paid_time IS NULL AND cancelled_time IS NOT NULL AND completed_time IS NULL AND cancel_reason IS NOT NULL) OR (status = '4' AND paid_time IS NOT NULL AND cancelled_time IS NULL AND completed_time IS NOT NULL)"
+        ]
+      ],
+      "business": "状态、成功支付/交付记录、明细总额和库存的跨表一致性必须由事务服务保证，CHECK 只验证当前行。先查幂等记录再查报价，旧请求在 Redis 报价过期后仍能返回原单。"
+    },
+    {
+      "name": "mall_order_item",
+      "title": "订单商品不可变快照",
+      "columns": [
+        {
+          "name": "order_item_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "自增主键；应用只使用正数，接口序列化为字符串",
+          "api": "orderItemId"
+        },
+        {
+          "name": "order_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "所属订单",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "prop_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "商品历史关联；软删除后仍保留",
+          "api": "propId"
+        },
+        {
+          "name": "prop_name",
+          "type": "VARCHAR(80)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "下单时商品名称快照，不随改名变更",
+          "api": "propName"
+        },
+        {
+          "name": "cover_url",
+          "type": "VARCHAR(80)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "下单时受控图片 URL 快照",
+          "api": "coverUrl"
+        },
+        {
+          "name": "spec_json",
+          "type": "JSON",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "下单时展示规格快照",
+          "api": "specs"
+        },
+        {
+          "name": "unit_price",
+          "type": "DECIMAL(12,2)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "下单时真实单价，不随调价变更",
+          "api": "unitPrice"
+        },
+        {
+          "name": "quantity",
+          "type": "TINYINT UNSIGNED",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "1–99，合并后的购买数量",
+          "api": "quantity"
+        },
+        {
+          "name": "subtotal",
+          "type": "DECIMAL(12,2)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": "unit_price * quantity",
+          "description": "数据库生成列；INSERT/UPDATE 不允许赋值；服务端还需检查总额容量",
+          "api": "subtotal"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "快照创建时间",
+          "api": "内部字段，不直接返回"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`order_item_id`)",
+        "UNIQUE KEY `uk_order_item_prop` (`order_id`,`prop_id`)",
+        "UNIQUE KEY `uk_order_item_identity` (`order_item_id`,`order_id`,`prop_id`)",
+        "CONSTRAINT `fk_item_order` FOREIGN KEY (`order_id`) REFERENCES `mall_order` (`order_id`) ON DELETE RESTRICT ON UPDATE RESTRICT",
+        "CONSTRAINT `fk_item_prop` FOREIGN KEY (`prop_id`) REFERENCES `mall_prop` (`prop_id`) ON DELETE RESTRICT ON UPDATE RESTRICT"
+      ],
+      "checks": [
+        [
+          "ck_order_item_values",
+          "unit_price > 0 AND quantity BETWEEN 1 AND 99 AND JSON_TYPE(spec_json) = 'ARRAY'"
+        ]
+      ],
+      "business": "快照生成后不对用户和后台开放修改。canReview/reviewId 由订单状态和评价关联派生，不存容易失效的标记列。"
+    },
+    {
+      "name": "mall_payment_record",
+      "title": "唯一成功模拟支付事实",
+      "columns": [
+        {
+          "name": "payment_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "自增主键；应用只使用正数，接口序列化为字符串",
+          "api": "内部键，不暴露"
+        },
+        {
+          "name": "order_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "所属订单，一个订单至多一条成功支付",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "payment_no",
+          "type": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "全局唯一成功支付编号",
+          "api": "paymentNo"
+        },
+        {
+          "name": "channel",
+          "type": "VARCHAR(8)",
+          "nullable": false,
+          "default": "'MOCK'",
+          "extra": "",
+          "generated": null,
+          "description": "首版仅 MOCK",
+          "api": "channel"
+        },
+        {
+          "name": "amount",
+          "type": "DECIMAL(12,2)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "与订单快照金额相等，由支付事务校验",
+          "api": "amount"
+        },
+        {
+          "name": "paid_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "成功支付发生时间，与订单 paid_time 同值",
+          "api": "paidAt"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "事实落库时间",
+          "api": "内部字段，不直接返回"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`payment_id`)",
+        "UNIQUE KEY `uk_payment_order` (`order_id`)",
+        "UNIQUE KEY `uk_payment_no` (`payment_no`)",
+        "CONSTRAINT `fk_payment_order` FOREIGN KEY (`order_id`) REFERENCES `mall_order` (`order_id`) ON DELETE RESTRICT ON UPDATE RESTRICT"
+      ],
+      "checks": [
+        [
+          "ck_payment_values",
+          "channel = 'MOCK' AND amount > 0"
+        ]
+      ],
+      "business": "FAIL 不写成功记录，不修改订单状态或销量。支付幂等读取原记录，不能再次记销量。"
+    },
+    {
+      "name": "mall_order_delivery",
+      "title": "唯一虚拟交付事实",
+      "columns": [
+        {
+          "name": "delivery_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "自增主键；应用只使用正数，接口序列化为字符串",
+          "api": "内部键，不暴露"
+        },
+        {
+          "name": "order_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "所属订单，一单至多一次完成交付",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "delivery_note",
+          "type": "VARCHAR(1000)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "2–1000 字符交付说明，购买会员可见，禁止游戏密码",
+          "api": "DeliveryRecord.note"
+        },
+        {
+          "name": "operator_admin_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "后台操作者 ID，逻辑关联 sys_user；从认证上下文取得",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "operator_name",
+          "type": "VARCHAR(64)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "操作者账号快照，防止后台账号后来删除导致历史丢失",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "delivered_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "交付完成时间，与订单 completed_time 同值",
+          "api": "DeliveryRecord.deliveredAt"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "记录落库时间",
+          "api": "内部字段，不直接返回"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`delivery_id`)",
+        "UNIQUE KEY `uk_delivery_order` (`order_id`)",
+        "CONSTRAINT `fk_delivery_order` FOREIGN KEY (`order_id`) REFERENCES `mall_order` (`order_id`) ON DELETE RESTRICT ON UPDATE RESTRICT"
+      ],
+      "checks": [
+        [
+          "ck_delivery_values",
+          "CHAR_LENGTH(delivery_note) BETWEEN 2 AND 1000 AND operator_admin_id > 0"
+        ]
+      ],
+      "business": "与 2→4 状态更新同事务。重复相同说明读原记录，不同说明返回状态冲突，不能覆盖历史。"
+    },
+    {
+      "name": "mall_order_log",
+      "title": "只追加订单状态流水",
+      "columns": [
+        {
+          "name": "log_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "自增主键；应用只使用正数，接口序列化为字符串",
+          "api": "内部键，不暴露"
+        },
+        {
+          "name": "order_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "所属订单",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "from_status",
+          "type": "CHAR(1)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "初始建单为 null，否则是本次动作的旧状态",
+          "api": "OrderLog.fromStatus"
+        },
+        {
+          "name": "to_status",
+          "type": "CHAR(1)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "本次动作后的新状态",
+          "api": "OrderLog.toStatus"
+        },
+        {
+          "name": "operator_type",
+          "type": "VARCHAR(6)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "ADMIN、MEMBER、SYSTEM，多态操作者类型",
+          "api": "StockLog.operatorType；订单日志不返回操作者"
+        },
+        {
+          "name": "operator_id",
+          "type": "BIGINT",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "按类型逻辑关联 sys_user 或 mall_member；SYSTEM 必须 null",
+          "api": "StockLog.operatorId"
+        },
+        {
+          "name": "operator_name",
+          "type": "VARCHAR(64)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "账号快照；SYSTEM 使用 system",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "reason",
+          "type": "VARCHAR(1000)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "动作说明；完整交付说明存交付表，取消原因同时存订单快照",
+          "api": "OrderLog.reason"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "状态变化时间",
+          "api": "OrderLog.createdAt"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`log_id`)",
+        "UNIQUE KEY `uk_order_log_state` (`order_id`,`to_status`)",
+        "KEY `idx_order_log_timeline` (`order_id`,`create_time`,`log_id`)",
+        "CONSTRAINT `fk_order_log_order` FOREIGN KEY (`order_id`) REFERENCES `mall_order` (`order_id`) ON DELETE RESTRICT ON UPDATE RESTRICT"
+      ],
+      "checks": [
+        [
+          "ck_order_log_transition",
+          "(from_status IS NULL AND to_status = '1') OR (from_status = '1' AND to_status IN ('2','3')) OR (from_status = '2' AND to_status = '4')"
+        ],
+        [
+          "ck_order_log_operator",
+          "(operator_type = 'SYSTEM' AND operator_id IS NULL) OR (operator_type IN ('ADMIN','MEMBER') AND operator_id IS NOT NULL AND operator_id > 0)"
+        ]
+      ],
+      "business": "只记录真实成功的状态转移；失败模拟支付不新增状态事件；当前行检查不替代持有订单行锁的 Service 状态机。"
+    },
+    {
+      "name": "mall_stock_log",
+      "title": "只追加库存流水及库存调整幂等凭据",
+      "columns": [
+        {
+          "name": "stock_log_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "自增主键；应用只使用正数，接口序列化为字符串",
+          "api": "stockLogId"
+        },
+        {
+          "name": "prop_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "商品关联",
+          "api": "propId"
+        },
+        {
+          "name": "prop_name",
+          "type": "VARCHAR(80)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "库存变动时商品名称快照",
+          "api": "propName"
+        },
+        {
+          "name": "change_qty",
+          "type": "INT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "本次增减量，初始库存允许 0，库存调整不允许 0",
+          "api": "changeQty"
+        },
+        {
+          "name": "before_stock",
+          "type": "INT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "变更前库存，必须在锁/原子更新事务中取得",
+          "api": "beforeStock"
+        },
+        {
+          "name": "after_stock",
+          "type": "INT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "变更后库存，必须等于 before_stock+change_qty",
+          "api": "afterStock"
+        },
+        {
+          "name": "biz_type",
+          "type": "VARCHAR(16)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "INITIAL/ORDER_RESERVE/ORDER_RELEASE/ADMIN_ADJUST",
+          "api": "bizType"
+        },
+        {
+          "name": "biz_key",
+          "type": "VARCHAR(64) CHARACTER SET ascii COLLATE ascii_bin",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "INITIAL=商品 ID；订单类=orderNo；调整=requestKey",
+          "api": "bizKey"
+        },
+        {
+          "name": "request_hash",
+          "type": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "ADMIN_ADJUST 时必填，摘要包含 propId/operatorId/delta/reason；其他类型可空",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "order_id",
+          "type": "BIGINT",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "订单扣减/回补时必填，初始和人工调整为 null",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "operator_type",
+          "type": "VARCHAR(6)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "ADMIN、MEMBER、SYSTEM，多态操作者类型",
+          "api": "StockLog.operatorType；订单日志不返回操作者"
+        },
+        {
+          "name": "operator_id",
+          "type": "BIGINT",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "按类型逻辑关联 sys_user 或 mall_member；SYSTEM 必须 null",
+          "api": "StockLog.operatorId"
+        },
+        {
+          "name": "operator_name",
+          "type": "VARCHAR(64)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "账号快照；SYSTEM 使用 system",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "reason",
+          "type": "VARCHAR(200)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "库存变动或人工调整原因",
+          "api": "reason"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "变动时间",
+          "api": "createdAt"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`stock_log_id`)",
+        "UNIQUE KEY `uk_stock_biz` (`prop_id`,`biz_type`,`biz_key`)",
+        "KEY `idx_stock_prop_time` (`prop_id`,`create_time` DESC,`stock_log_id` DESC)",
+        "KEY `idx_stock_type_time` (`biz_type`,`create_time` DESC,`stock_log_id` DESC)",
+        "CONSTRAINT `fk_stock_prop` FOREIGN KEY (`prop_id`) REFERENCES `mall_prop` (`prop_id`) ON DELETE RESTRICT ON UPDATE RESTRICT",
+        "CONSTRAINT `fk_stock_order` FOREIGN KEY (`order_id`) REFERENCES `mall_order` (`order_id`) ON DELETE RESTRICT ON UPDATE RESTRICT"
+      ],
+      "checks": [
+        [
+          "ck_stock_arithmetic",
+          "before_stock BETWEEN 0 AND 1000000000 AND after_stock BETWEEN 0 AND 1000000000 AND change_qty BETWEEN -1000000000 AND 1000000000 AND after_stock = before_stock + change_qty"
+        ],
+        [
+          "ck_stock_biz",
+          "(biz_type = 'INITIAL' AND before_stock = 0 AND change_qty >= 0 AND order_id IS NULL) OR (biz_type = 'ORDER_RESERVE' AND change_qty < 0 AND order_id IS NOT NULL) OR (biz_type = 'ORDER_RELEASE' AND change_qty > 0 AND order_id IS NOT NULL) OR (biz_type = 'ADMIN_ADJUST' AND change_qty <> 0 AND order_id IS NULL AND request_hash IS NOT NULL)"
+        ],
+        [
+          "ck_stock_operator",
+          "(operator_type = 'SYSTEM' AND operator_id IS NULL) OR (operator_type IN ('ADMIN','MEMBER') AND operator_id IS NOT NULL AND operator_id > 0)"
+        ]
+      ],
+      "business": "重放人工调整时返回原流水的 before/after，不使用已经发生其他变动的当前库存。库存数值和日志必须同事务提交。"
+    },
+    {
+      "name": "mall_review",
+      "title": "每条已完成订单明细唯一评价",
+      "columns": [
+        {
+          "name": "review_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "自增主键；应用只使用正数，接口序列化为字符串",
+          "api": "reviewId"
+        },
+        {
+          "name": "member_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "评价会员，与订单归属组成复合外键",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "order_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "订单关联",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "order_item_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "唯一被评价明细，隐藏也不释放唯一约束",
+          "api": "orderItemId"
+        },
+        {
+          "name": "prop_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "商品关联，与明细组合外键保证一致",
+          "api": "propId"
+        },
+        {
+          "name": "score",
+          "type": "TINYINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "1–5 整数评分",
+          "api": "score"
+        },
+        {
+          "name": "content",
+          "type": "VARCHAR(1000)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "5–1000 字符纯文本，不解析 HTML",
+          "api": "content"
+        },
+        {
+          "name": "status",
+          "type": "VARCHAR(7)",
+          "nullable": false,
+          "default": "'VISIBLE'",
+          "extra": "",
+          "generated": null,
+          "description": "VISIBLE 或 HIDDEN",
+          "api": "MemberReview/AdminReview.status"
+        },
+        {
+          "name": "hide_reason",
+          "type": "VARCHAR(200)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "隐藏原因，隐藏时必填",
+          "api": "hideReason"
+        },
+        {
+          "name": "hidden_by",
+          "type": "BIGINT",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "隐藏操作者后台 ID，逻辑关联 sys_user",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "hidden_time",
+          "type": "DATETIME(3)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "隐藏时间",
+          "api": "内部字段，不直接返回"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "记录创建时间，数据库会话为 +08:00",
+          "api": "createdAt"
+        },
+        {
+          "name": "update_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "ON UPDATE CURRENT_TIMESTAMP(3)",
+          "generated": null,
+          "description": "记录最近修改时间；更新行时由数据库刷新",
+          "api": "updatedAt（仅对应 DTO 中有该字段时返回）"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (`review_id`)",
+        "UNIQUE KEY `uk_review_order_item` (`order_item_id`)",
+        "KEY `idx_review_public` (`prop_id`,`status`,`create_time` DESC,`review_id` DESC)",
+        "KEY `idx_review_member` (`member_id`,`create_time` DESC,`review_id` DESC)",
+        "CONSTRAINT `fk_review_owner` FOREIGN KEY (`order_id`,`member_id`) REFERENCES `mall_order` (`order_id`,`member_id`) ON DELETE RESTRICT ON UPDATE RESTRICT",
+        "CONSTRAINT `fk_review_item` FOREIGN KEY (`order_item_id`,`order_id`,`prop_id`) REFERENCES `mall_order_item` (`order_item_id`,`order_id`,`prop_id`) ON DELETE RESTRICT ON UPDATE RESTRICT"
+      ],
+      "checks": [
+        [
+          "ck_review_content",
+          "score BETWEEN 1 AND 5 AND CHAR_LENGTH(content) BETWEEN 5 AND 1000"
+        ],
+        [
+          "ck_review_visibility",
+          "(status = 'VISIBLE' AND hide_reason IS NULL AND hidden_by IS NULL AND hidden_time IS NULL) OR (status = 'HIDDEN' AND hide_reason IS NOT NULL AND CHAR_LENGTH(hide_reason) BETWEEN 2 AND 200 AND hidden_by IS NOT NULL AND hidden_by > 0 AND hidden_time IS NOT NULL)"
+        ]
+      ],
+      "business": "复合外键保证评价明细、订单、商品和会员归属一致。订单状态必须为 4 的条件不能用跨表 CHECK 表达，由服务事务验证。公开均分/数量仅聚合 VISIBLE。"
+    },
+    {
+      "name": "mall_game_server",
+      "title": "游戏区服",
+      "columns": [
+        {
+          "name": "server_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "AUTO_INCREMENT",
+          "generated": null,
+          "description": "区服主键",
+          "api": "serverId"
+        },
+        {
+          "name": "category_id",
+          "type": "BIGINT",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "所属游戏分类外键",
+          "api": "categoryId"
+        },
+        {
+          "name": "name",
+          "type": "VARCHAR(50)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "游戏内区服名称",
+          "api": "name"
+        },
+        {
+          "name": "sort",
+          "type": "INT",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "generated": null,
+          "description": "显示顺序 0–9999",
+          "api": "sort"
+        },
+        {
+          "name": "status",
+          "type": "CHAR(1)",
+          "nullable": false,
+          "default": "1",
+          "extra": "",
+          "generated": null,
+          "description": "0停用、1启用",
+          "api": "status"
+        },
+        {
+          "name": "remark",
+          "type": "VARCHAR(200)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "内部备注",
+          "api": "remark"
+        },
+        {
+          "name": "version",
+          "type": "INT",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "generated": null,
+          "description": "乐观锁版本",
+          "api": "version"
+        },
+        {
+          "name": "del_flag",
+          "type": "CHAR(1)",
+          "nullable": false,
+          "default": "0",
+          "extra": "",
+          "generated": null,
+          "description": "0正常、2软删除",
+          "api": "内部字段"
+        },
+        {
+          "name": "active_name",
+          "type": "VARCHAR(50)",
+          "nullable": true,
+          "default": null,
+          "extra": "",
+          "generated": "CASE WHEN del_flag='0' THEN name ELSE NULL END",
+          "description": "未删除时 name，否则 NULL",
+          "api": "内部生成字段"
+        },
+        {
+          "name": "create_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "创建时间",
+          "api": "createdAt"
+        },
+        {
+          "name": "update_time",
+          "type": "DATETIME(3)",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP(3)",
+          "extra": "",
+          "generated": null,
+          "description": "更新时间",
+          "api": "updatedAt"
+        },
+        {
+          "name": "create_by",
+          "type": "VARCHAR(64)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "后台创建人",
+          "api": "内部审计字段"
+        },
+        {
+          "name": "update_by",
+          "type": "VARCHAR(64)",
+          "nullable": false,
+          "default": null,
+          "extra": "",
+          "generated": null,
+          "description": "后台修改人",
+          "api": "内部审计字段"
+        }
+      ],
+      "keys": [
+        "PRIMARY KEY (server_id)",
+        "UNIQUE KEY uk_server_category_name(category_id,active_name)",
+        "KEY idx_server_category_status(category_id,del_flag,status,sort,server_id)",
+        "FOREIGN KEY(category_id) REFERENCES mall_game_category(category_id) ON DELETE RESTRICT ON UPDATE RESTRICT"
+      ],
+      "checks": [
+        "CHAR_LENGTH(TRIM(name)) BETWEEN 1 AND 50 AND sort BETWEEN 0 AND 9999 AND version>=0 AND status IN ('0','1') AND del_flag IN ('0','2')"
+      ],
+      "business": "同游戏未删除名称唯一；软删除允许重新创建同名区服。下单按游戏→区服加锁校验，订单交付 JSON 保存当时名称，不通过外键回读历史名称。"
+    }
+  ]
+}

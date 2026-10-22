@@ -1,0 +1,30 @@
+# 将 root 改为 adminsystemui/dist 的部署目录。
+server {
+    listen 80;
+    server_name localhost;
+    root /srv/gcSystem/admin;
+    index index.html;
+    client_max_body_size 20m;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # 商城接口与图片保留 /api/mall 前缀。
+    location /api/mall/ {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # 尾部 / 将 /admin-api/login 转成后端 /login。
+    location /admin-api/ {
+        proxy_pass http://127.0.0.1:8080/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

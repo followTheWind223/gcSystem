@@ -1,0 +1,1505 @@
+{
+  "contractVersion": "3.0.0",
+  "notice": "统一若依认证，旧独立会员认证示例已移除；测试数据为虚构示例。",
+  "scenarios": [
+    {
+      "name": "读取当前会员资料",
+      "operationId": "memberGetProfile",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/me"
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "memberId": "2001",
+          "username": "demo_member",
+          "nickname": "演示会员",
+          "avatarUrl": null,
+          "email": "member@example.com",
+          "emailVerified": true,
+          "phoneNumber": null,
+          "createdAt": "2026-10-22T20:00:00+08:00"
+        }
+      }
+    },
+    {
+      "name": "修改昵称和联系方式",
+      "operationId": "memberUpdateProfile",
+      "request": {
+        "method": "PUT",
+        "path": "/api/mall/me",
+        "body": {
+          "nickname": "演示会员",
+          "phoneNumber": null
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "memberId": "2001",
+          "username": "demo_member",
+          "nickname": "演示会员",
+          "avatarUrl": null,
+          "email": "member@example.com",
+          "emailVerified": true,
+          "phoneNumber": null,
+          "createdAt": "2026-10-22T20:00:00+08:00"
+        }
+      }
+    },
+    {
+      "name": "修改会员密码",
+      "operationId": "memberChangePassword",
+      "request": {
+        "method": "PUT",
+        "path": "/api/mall/me/password",
+        "body": {
+          "oldPassword": "Example123!",
+          "newPassword": "NewExample123!"
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": null
+      }
+    },
+    {
+      "name": "上传并更新会员头像",
+      "operationId": "memberUploadAvatar",
+      "request": {
+        "method": "POST",
+        "path": "/api/mall/me/avatar"
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "memberId": "2001",
+          "username": "demo_member",
+          "nickname": "演示会员",
+          "avatarUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+          "email": "member@example.com",
+          "emailVerified": true,
+          "phoneNumber": null,
+          "createdAt": "2026-10-22T20:00:00+08:00"
+        }
+      }
+    },
+    {
+      "name": "读取商城首页",
+      "operationId": "mallGetHome",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/home"
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "banners": [
+            {
+              "bannerId": "301",
+              "title": "精选游戏道具",
+              "imageUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+              "targetPropId": "1001",
+              "sort": 1
+            }
+          ],
+          "hotCategories": [
+            {
+              "categoryId": "101",
+              "name": "星海远征",
+              "iconUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+              "sort": 1,
+              "recommended": true
+            }
+          ],
+          "hotProps": [
+            {
+              "propId": "1001",
+              "categoryId": "101",
+              "categoryName": "星海远征",
+              "name": "星辉长剑",
+              "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+              "price": "49.90",
+              "originalPrice": "69.90",
+              "stock": 8,
+              "sales": 5,
+              "onSaleAt": "2026-10-22T20:00:00+08:00",
+              "canPurchase": true
+            }
+          ],
+          "serverTime": "2026-10-22T20:00:00+08:00"
+        }
+      }
+    },
+    {
+      "name": "读取全部可见游戏分类",
+      "operationId": "mallListCategories",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/categories"
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": [
+          {
+            "categoryId": "101",
+            "name": "星海远征",
+            "iconUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+            "sort": 1,
+            "recommended": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "分页检索道具",
+      "operationId": "mallListProps",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/props",
+        "query": {
+          "pageNum": 1,
+          "pageSize": 10
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "查询成功",
+        "rows": [
+          {
+            "propId": "1001",
+            "categoryId": "101",
+            "categoryName": "星海远征",
+            "name": "星辉长剑",
+            "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+            "price": "49.90",
+            "originalPrice": "69.90",
+            "stock": 8,
+            "sales": 5,
+            "onSaleAt": "2026-10-22T20:00:00+08:00",
+            "canPurchase": true
+          }
+        ],
+        "total": 1
+      }
+    },
+    {
+      "name": "读取公开道具详情",
+      "operationId": "mallGetProp",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/props/{propId}",
+        "pathParams": {
+          "propId": "1001"
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "propId": "1001",
+          "categoryId": "101",
+          "categoryName": "星海远征",
+          "name": "星辉长剑",
+          "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+          "price": "49.90",
+          "originalPrice": "69.90",
+          "stock": 8,
+          "sales": 5,
+          "onSaleAt": "2026-10-22T20:00:00+08:00",
+          "canPurchase": true,
+          "images": [
+            {
+              "url": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+              "sort": 1
+            }
+          ],
+          "detailHtml": "<p>演示道具，管理员手动交付。</p>",
+          "specs": [
+            {
+              "name": "品质",
+              "value": "史诗"
+            }
+          ],
+          "deliveryFields": [
+            "gameAccount",
+            "serverName",
+            "roleName"
+          ],
+          "reviewCount": 1,
+          "averageScore": 5
+        }
+      }
+    },
+    {
+      "name": "分页读取商品公开评价",
+      "operationId": "mallListPropReviews",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/props/{propId}/reviews",
+        "pathParams": {
+          "propId": "1001"
+        },
+        "query": {
+          "pageNum": 1,
+          "pageSize": 10
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "查询成功",
+        "rows": [
+          {
+            "reviewId": "7001",
+            "reviewer": {
+              "displayName": "另一位玩家",
+              "avatarUrl": null
+            },
+            "score": 5,
+            "content": "交付及时，道具信息与展示一致。",
+            "createdAt": "2026-10-22T20:00:00+08:00"
+          }
+        ],
+        "total": 1
+      }
+    },
+    {
+      "name": "读取当前会员购物车",
+      "operationId": "memberGetCart",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/cart/items"
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "items": [
+            {
+              "cartItemId": "4001",
+              "propId": "1001",
+              "propName": "星辉长剑",
+              "categoryName": "星海远征",
+              "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+              "unitPrice": "49.90",
+              "quantity": 2,
+              "checked": true,
+              "stock": 8,
+              "availability": "AVAILABLE",
+              "canCheckout": true,
+              "subtotal": "99.80",
+              "updatedAt": "2026-10-22T20:00:00+08:00"
+            }
+          ],
+          "summary": {
+            "totalItemCount": 1,
+            "totalQuantity": 2,
+            "selectedItemCount": 1,
+            "selectedQuantity": 2,
+            "selectedAmount": "99.80",
+            "invalidItemCount": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "加入购物车并合并数量",
+      "operationId": "memberAddCartItem",
+      "request": {
+        "method": "POST",
+        "path": "/api/mall/cart/items",
+        "body": {
+          "propId": "1001",
+          "quantity": 2
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "items": [
+            {
+              "cartItemId": "4001",
+              "propId": "1001",
+              "propName": "星辉长剑",
+              "categoryName": "星海远征",
+              "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+              "unitPrice": "49.90",
+              "quantity": 2,
+              "checked": true,
+              "stock": 8,
+              "availability": "AVAILABLE",
+              "canCheckout": true,
+              "subtotal": "99.80",
+              "updatedAt": "2026-10-22T20:00:00+08:00"
+            }
+          ],
+          "summary": {
+            "totalItemCount": 1,
+            "totalQuantity": 2,
+            "selectedItemCount": 1,
+            "selectedQuantity": 2,
+            "selectedAmount": "99.80",
+            "invalidItemCount": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "设置购物车数量和勾选状态",
+      "operationId": "memberUpdateCartItem",
+      "request": {
+        "method": "PUT",
+        "path": "/api/mall/cart/items/{cartItemId}",
+        "body": {
+          "quantity": 2,
+          "checked": true
+        },
+        "pathParams": {
+          "cartItemId": "4001"
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "items": [
+            {
+              "cartItemId": "4001",
+              "propId": "1001",
+              "propName": "星辉长剑",
+              "categoryName": "星海远征",
+              "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+              "unitPrice": "49.90",
+              "quantity": 2,
+              "checked": true,
+              "stock": 8,
+              "availability": "AVAILABLE",
+              "canCheckout": true,
+              "subtotal": "99.80",
+              "updatedAt": "2026-10-22T20:00:00+08:00"
+            }
+          ],
+          "summary": {
+            "totalItemCount": 1,
+            "totalQuantity": 2,
+            "selectedItemCount": 1,
+            "selectedQuantity": 2,
+            "selectedAmount": "99.80",
+            "invalidItemCount": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "删除本人购物车项",
+      "operationId": "memberDeleteCartItem",
+      "request": {
+        "method": "DELETE",
+        "path": "/api/mall/cart/items/{cartItemId}",
+        "pathParams": {
+          "cartItemId": "4001"
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "items": [
+            {
+              "cartItemId": "4001",
+              "propId": "1001",
+              "propName": "星辉长剑",
+              "categoryName": "星海远征",
+              "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+              "unitPrice": "49.90",
+              "quantity": 2,
+              "checked": true,
+              "stock": 8,
+              "availability": "AVAILABLE",
+              "canCheckout": true,
+              "subtotal": "99.80",
+              "updatedAt": "2026-10-22T20:00:00+08:00"
+            }
+          ],
+          "summary": {
+            "totalItemCount": 1,
+            "totalQuantity": 2,
+            "selectedItemCount": 1,
+            "selectedQuantity": 2,
+            "selectedAmount": "99.80",
+            "invalidItemCount": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "批量设置购物车勾选状态",
+      "operationId": "memberSelectCartItems",
+      "request": {
+        "method": "PUT",
+        "path": "/api/mall/cart/selection",
+        "body": {
+          "cartItemIds": [
+            "4001"
+          ],
+          "checked": true
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "items": [
+            {
+              "cartItemId": "4001",
+              "propId": "1001",
+              "propName": "星辉长剑",
+              "categoryName": "星海远征",
+              "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+              "unitPrice": "49.90",
+              "quantity": 2,
+              "checked": true,
+              "stock": 8,
+              "availability": "AVAILABLE",
+              "canCheckout": true,
+              "subtotal": "99.80",
+              "updatedAt": "2026-10-22T20:00:00+08:00"
+            }
+          ],
+          "summary": {
+            "totalItemCount": 1,
+            "totalQuantity": 2,
+            "selectedItemCount": 1,
+            "selectedQuantity": 2,
+            "selectedAmount": "99.80",
+            "invalidItemCount": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "预览报价和交付字段",
+      "operationId": "memberPreviewOrder",
+      "request": {
+        "method": "POST",
+        "path": "/api/mall/order-quotes",
+        "body": {
+          "source": "CART",
+          "cartItemIds": [
+            "4001"
+          ]
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "quoteToken": "mock-quote-token-0001",
+          "quoteExpiresAt": "2026-10-22T20:05:00+08:00",
+          "source": "CART",
+          "items": [
+            {
+              "propId": "1001",
+              "cartItemId": "4001",
+              "propName": "星辉长剑",
+              "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+              "specs": [
+                {
+                  "name": "品质",
+                  "value": "史诗"
+                }
+              ],
+              "unitPrice": "49.90",
+              "quantity": 2,
+              "subtotal": "99.80",
+              "stock": 8
+            }
+          ],
+          "totalAmount": "99.80",
+          "totalQuantity": 2,
+          "currency": "CNY",
+          "deliveryFields": [
+            "gameAccount",
+            "serverName",
+            "roleName"
+          ],
+          "serverTime": "2026-10-22T20:00:00+08:00",
+          "serverGroups": [
+            {
+              "categoryId": "101",
+              "categoryName": "星海远征",
+              "servers": [
+                {
+                  "serverId": "1",
+                  "name": "一区"
+                },
+                {
+                  "serverId": "2",
+                  "name": "二区"
+                },
+                {
+                  "serverId": "3",
+                  "name": "三区"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "按报价创建待支付订单",
+      "operationId": "memberCreateOrder",
+      "request": {
+        "method": "POST",
+        "path": "/api/mall/orders",
+        "body": {
+          "requestKey": "3153d0a1-22df-4480-a34d-0c86d95d045b",
+          "quoteToken": "mock-quote-token-0001",
+          "deliveryInfo": {
+            "gameAccount": "demo_game_account",
+            "serverName": "一区",
+            "roleName": "星海旅人"
+          },
+          "remark": "请按角色名核对后交付。"
+        }
+      },
+      "httpStatus": 201,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "order": {
+            "orderId": "5001",
+            "orderNo": "GC202610222000000001",
+            "status": "1",
+            "totalAmount": "99.80",
+            "totalQuantity": 2,
+            "itemCount": 1,
+            "currency": "CNY",
+            "createdAt": "2026-10-22T20:00:00+08:00",
+            "expiresAt": "2026-10-22T20:30:00+08:00",
+            "paidAt": null,
+            "cancelledAt": null,
+            "completedAt": null,
+            "serverTime": "2026-10-22T20:00:00+08:00",
+            "canPay": true,
+            "canCancel": true,
+            "items": [
+              {
+                "propId": "1001",
+                "propName": "星辉长剑",
+                "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+                "specs": [
+                  {
+                    "name": "品质",
+                    "value": "史诗"
+                  }
+                ],
+                "unitPrice": "49.90",
+                "quantity": 2,
+                "subtotal": "99.80",
+                "orderItemId": "50011",
+                "canReview": false,
+                "reviewId": null
+              }
+            ],
+            "deliveryInfo": {
+              "gameAccount": "demo_game_account",
+              "serverName": "一区",
+              "roleName": "星海旅人"
+            },
+            "remark": "请按角色名核对后交付。",
+            "cancelReason": null,
+            "payment": null,
+            "delivery": null,
+            "logs": [
+              {
+                "fromStatus": null,
+                "toStatus": "1",
+                "reason": "创建订单",
+                "createdAt": "2026-10-22T20:00:00+08:00"
+              }
+            ]
+          },
+          "replayed": false
+        }
+      }
+    },
+    {
+      "name": "分页读取我的订单",
+      "operationId": "memberListOrders",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/orders",
+        "query": {
+          "pageNum": 1,
+          "pageSize": 10
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "查询成功",
+        "rows": [
+          {
+            "orderId": "5001",
+            "orderNo": "GC202610222000000001",
+            "status": "1",
+            "totalAmount": "99.80",
+            "totalQuantity": 2,
+            "itemCount": 1,
+            "currency": "CNY",
+            "createdAt": "2026-10-22T20:00:00+08:00",
+            "expiresAt": "2026-10-22T20:30:00+08:00",
+            "paidAt": null,
+            "cancelledAt": null,
+            "completedAt": null,
+            "serverTime": "2026-10-22T20:00:00+08:00",
+            "canPay": true,
+            "canCancel": true,
+            "items": [
+              {
+                "propId": "1001",
+                "propName": "星辉长剑",
+                "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+                "specs": [
+                  {
+                    "name": "品质",
+                    "value": "史诗"
+                  }
+                ],
+                "unitPrice": "49.90",
+                "quantity": 2,
+                "subtotal": "99.80",
+                "orderItemId": "50011",
+                "canReview": false,
+                "reviewId": null
+              }
+            ]
+          }
+        ],
+        "total": 1
+      }
+    },
+    {
+      "name": "读取我的订单详情",
+      "operationId": "memberGetOrder",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/orders/{orderNo}",
+        "pathParams": {
+          "orderNo": "GC202610222000000001"
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "orderId": "5001",
+          "orderNo": "GC202610222000000001",
+          "status": "1",
+          "totalAmount": "99.80",
+          "totalQuantity": 2,
+          "itemCount": 1,
+          "currency": "CNY",
+          "createdAt": "2026-10-22T20:00:00+08:00",
+          "expiresAt": "2026-10-22T20:30:00+08:00",
+          "paidAt": null,
+          "cancelledAt": null,
+          "completedAt": null,
+          "serverTime": "2026-10-22T20:00:00+08:00",
+          "canPay": true,
+          "canCancel": true,
+          "items": [
+            {
+              "propId": "1001",
+              "propName": "星辉长剑",
+              "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+              "specs": [
+                {
+                  "name": "品质",
+                  "value": "史诗"
+                }
+              ],
+              "unitPrice": "49.90",
+              "quantity": 2,
+              "subtotal": "99.80",
+              "orderItemId": "50011",
+              "canReview": false,
+              "reviewId": null
+            }
+          ],
+          "deliveryInfo": {
+            "gameAccount": "demo_game_account",
+            "serverName": "一区",
+            "roleName": "星海旅人"
+          },
+          "remark": "请按角色名核对后交付。",
+          "cancelReason": null,
+          "payment": null,
+          "delivery": null,
+          "logs": [
+            {
+              "fromStatus": null,
+              "toStatus": "1",
+              "reason": "创建订单",
+              "createdAt": "2026-10-22T20:00:00+08:00"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "取消本人待支付订单",
+      "operationId": "memberCancelOrder",
+      "request": {
+        "method": "PUT",
+        "path": "/api/mall/orders/{orderNo}/cancellation",
+        "body": {
+          "reason": "暂时不需要了"
+        },
+        "pathParams": {
+          "orderNo": "GC202610222000000001"
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "orderId": "5001",
+          "orderNo": "GC202610222000000001",
+          "status": "3",
+          "totalAmount": "99.80",
+          "totalQuantity": 2,
+          "itemCount": 1,
+          "currency": "CNY",
+          "createdAt": "2026-10-22T20:00:00+08:00",
+          "expiresAt": "2026-10-22T20:30:00+08:00",
+          "paidAt": null,
+          "cancelledAt": "2026-10-22T20:00:00+08:00",
+          "completedAt": null,
+          "serverTime": "2026-10-22T20:00:00+08:00",
+          "canPay": false,
+          "canCancel": false,
+          "items": [
+            {
+              "propId": "1001",
+              "propName": "星辉长剑",
+              "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+              "specs": [
+                {
+                  "name": "品质",
+                  "value": "史诗"
+                }
+              ],
+              "unitPrice": "49.90",
+              "quantity": 2,
+              "subtotal": "99.80",
+              "orderItemId": "50011",
+              "canReview": false,
+              "reviewId": null
+            }
+          ],
+          "deliveryInfo": {
+            "gameAccount": "demo_game_account",
+            "serverName": "一区",
+            "roleName": "星海旅人"
+          },
+          "remark": "请按角色名核对后交付。",
+          "cancelReason": "暂时不需要了",
+          "payment": null,
+          "delivery": null,
+          "logs": [
+            {
+              "fromStatus": null,
+              "toStatus": "1",
+              "reason": "创建订单",
+              "createdAt": "2026-10-22T20:00:00+08:00"
+            },
+            {
+              "fromStatus": "1",
+              "toStatus": "3",
+              "reason": "暂时不需要了",
+              "createdAt": "2026-10-22T20:00:00+08:00"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "模拟支付成功或失败",
+      "operationId": "memberMockPay",
+      "request": {
+        "method": "POST",
+        "path": "/api/mall/orders/{orderNo}/payments",
+        "body": {
+          "result": "SUCCESS"
+        },
+        "pathParams": {
+          "orderNo": "GC202610222000000001"
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "outcome": "SUCCESS",
+          "order": {
+            "orderId": "5001",
+            "orderNo": "GC202610222000000001",
+            "status": "2",
+            "totalAmount": "99.80",
+            "totalQuantity": 2,
+            "itemCount": 1,
+            "currency": "CNY",
+            "createdAt": "2026-10-22T20:00:00+08:00",
+            "expiresAt": "2026-10-22T20:30:00+08:00",
+            "paidAt": "2026-10-22T20:00:00+08:00",
+            "cancelledAt": null,
+            "completedAt": null,
+            "serverTime": "2026-10-22T20:00:00+08:00",
+            "canPay": false,
+            "canCancel": false,
+            "items": [
+              {
+                "propId": "1001",
+                "propName": "星辉长剑",
+                "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+                "specs": [
+                  {
+                    "name": "品质",
+                    "value": "史诗"
+                  }
+                ],
+                "unitPrice": "49.90",
+                "quantity": 2,
+                "subtotal": "99.80",
+                "orderItemId": "50011",
+                "canReview": false,
+                "reviewId": null
+              }
+            ],
+            "deliveryInfo": {
+              "gameAccount": "demo_game_account",
+              "serverName": "一区",
+              "roleName": "星海旅人"
+            },
+            "remark": "请按角色名核对后交付。",
+            "cancelReason": null,
+            "payment": {
+              "paymentNo": "MP202610222001000001",
+              "channel": "MOCK",
+              "amount": "99.80",
+              "paidAt": "2026-10-22T20:00:00+08:00"
+            },
+            "delivery": null,
+            "logs": [
+              {
+                "fromStatus": null,
+                "toStatus": "1",
+                "reason": "创建订单",
+                "createdAt": "2026-10-22T20:00:00+08:00"
+              },
+              {
+                "fromStatus": "1",
+                "toStatus": "2",
+                "reason": "模拟支付成功",
+                "createdAt": "2026-10-22T20:00:00+08:00"
+              }
+            ]
+          },
+          "paymentNo": "MP202610222001000001"
+        }
+      }
+    },
+    {
+      "name": "分页读取我的评价",
+      "operationId": "memberListMyReviews",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/me/reviews",
+        "query": {
+          "pageNum": 1,
+          "pageSize": 10
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "查询成功",
+        "rows": [
+          {
+            "reviewId": "7002",
+            "propId": "1001",
+            "propName": "星辉长剑",
+            "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+            "orderNo": "GC202610222000000003",
+            "orderItemId": "50031",
+            "score": 5,
+            "content": "交付及时，道具信息与展示一致。",
+            "status": "VISIBLE",
+            "hideReason": null,
+            "createdAt": "2026-10-22T20:00:00+08:00"
+          }
+        ],
+        "total": 1
+      }
+    },
+    {
+      "name": "评价本人已完成订单明细",
+      "operationId": "memberCreateReview",
+      "request": {
+        "method": "POST",
+        "path": "/api/mall/reviews",
+        "body": {
+          "orderItemId": "50031",
+          "score": 5,
+          "content": "交付及时，道具信息与展示一致。"
+        }
+      },
+      "httpStatus": 201,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "reviewId": "7002",
+          "propId": "1001",
+          "propName": "星辉长剑",
+          "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+          "orderNo": "GC202610222000000003",
+          "orderItemId": "50031",
+          "score": 5,
+          "content": "交付及时，道具信息与展示一致。",
+          "status": "VISIBLE",
+          "hideReason": null,
+          "createdAt": "2026-10-22T20:00:00+08:00"
+        }
+      }
+    },
+    {
+      "name": "商品列表为空",
+      "operationId": "mallListProps",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/props",
+        "query": {
+          "pageNum": 1,
+          "pageSize": 10
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "查询成功",
+        "rows": [],
+        "total": 0
+      }
+    },
+    {
+      "name": "购物车为空",
+      "operationId": "memberGetCart",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/cart/items"
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "items": [],
+          "summary": {
+            "totalItemCount": 0,
+            "totalQuantity": 0,
+            "selectedItemCount": 0,
+            "selectedQuantity": 0,
+            "selectedAmount": "0.00",
+            "invalidItemCount": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "公开商品已下架",
+      "operationId": "mallGetProp",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/props/{propId}",
+        "pathParams": {
+          "propId": "1001"
+        }
+      },
+      "httpStatus": 404,
+      "response": {
+        "code": 404,
+        "msg": "商品不存在或不可访问。",
+        "errorCode": "MALL_PROP_NOT_FOUND",
+        "data": null
+      }
+    },
+    {
+      "name": "结算商品库存不足",
+      "operationId": "memberPreviewOrder",
+      "request": {
+        "method": "POST",
+        "path": "/api/mall/order-quotes",
+        "body": {
+          "source": "CART",
+          "cartItemIds": [
+            "4001"
+          ]
+        }
+      },
+      "httpStatus": 409,
+      "response": {
+        "code": 409,
+        "msg": "库存不足，请调整购买数量。",
+        "errorCode": "MALL_STOCK_INSUFFICIENT",
+        "data": {
+          "items": [
+            {
+              "propId": "1001",
+              "cartItemId": "4001",
+              "reason": "OUT_OF_STOCK",
+              "availableStock": 1,
+              "currentUnitPrice": "49.90"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "下单时价格变化",
+      "operationId": "memberCreateOrder",
+      "request": {
+        "method": "POST",
+        "path": "/api/mall/orders",
+        "body": {
+          "requestKey": "3153d0a1-22df-4480-a34d-0c86d95d045b",
+          "quoteToken": "mock-quote-token-0001",
+          "deliveryInfo": {
+            "gameAccount": "demo_game_account",
+            "serverName": "一区",
+            "roleName": "星海旅人"
+          },
+          "remark": "请按角色名核对后交付。"
+        }
+      },
+      "httpStatus": 409,
+      "response": {
+        "code": 409,
+        "msg": "报价已变化，请重新确认。",
+        "errorCode": "MALL_QUOTE_CHANGED",
+        "data": {
+          "items": [
+            {
+              "propId": "1001",
+              "cartItemId": "4001",
+              "reason": "PRICE_CHANGED",
+              "currentUnitPrice": "59.90",
+              "availableStock": 8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "原请求幂等重放",
+      "operationId": "memberCreateOrder",
+      "request": {
+        "method": "POST",
+        "path": "/api/mall/orders",
+        "body": {
+          "requestKey": "3153d0a1-22df-4480-a34d-0c86d95d045b",
+          "quoteToken": "mock-quote-token-0001",
+          "deliveryInfo": {
+            "gameAccount": "demo_game_account",
+            "serverName": "一区",
+            "roleName": "星海旅人"
+          },
+          "remark": "请按角色名核对后交付。"
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "order": {
+            "orderId": "5001",
+            "orderNo": "GC202610222000000001",
+            "status": "1",
+            "totalAmount": "99.80",
+            "totalQuantity": 2,
+            "itemCount": 1,
+            "currency": "CNY",
+            "createdAt": "2026-10-22T20:00:00+08:00",
+            "expiresAt": "2026-10-22T20:30:00+08:00",
+            "paidAt": null,
+            "cancelledAt": null,
+            "completedAt": null,
+            "serverTime": "2026-10-22T20:00:00+08:00",
+            "canPay": true,
+            "canCancel": true,
+            "items": [
+              {
+                "propId": "1001",
+                "propName": "星辉长剑",
+                "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+                "specs": [
+                  {
+                    "name": "品质",
+                    "value": "史诗"
+                  }
+                ],
+                "unitPrice": "49.90",
+                "quantity": 2,
+                "subtotal": "99.80",
+                "orderItemId": "50011",
+                "canReview": false,
+                "reviewId": null
+              }
+            ],
+            "deliveryInfo": {
+              "gameAccount": "demo_game_account",
+              "serverName": "一区",
+              "roleName": "星海旅人"
+            },
+            "remark": "请按角色名核对后交付。",
+            "cancelReason": null,
+            "payment": null,
+            "delivery": null,
+            "logs": [
+              {
+                "fromStatus": null,
+                "toStatus": "1",
+                "reason": "创建订单",
+                "createdAt": "2026-10-22T20:00:00+08:00"
+              }
+            ]
+          },
+          "replayed": true
+        }
+      }
+    },
+    {
+      "name": "订单到期但等待任务关闭",
+      "operationId": "memberGetOrder",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/orders/{orderNo}",
+        "pathParams": {
+          "orderNo": "GC202610222000000001"
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "orderId": "5001",
+          "orderNo": "GC202610222000000001",
+          "status": "1",
+          "totalAmount": "99.80",
+          "totalQuantity": 2,
+          "itemCount": 1,
+          "currency": "CNY",
+          "createdAt": "2026-10-22T20:00:00+08:00",
+          "expiresAt": "2026-10-22T20:30:00+08:00",
+          "paidAt": null,
+          "cancelledAt": null,
+          "completedAt": null,
+          "serverTime": "2026-10-22T20:31:00+08:00",
+          "canPay": false,
+          "canCancel": true,
+          "items": [
+            {
+              "propId": "1001",
+              "propName": "星辉长剑",
+              "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+              "specs": [
+                {
+                  "name": "品质",
+                  "value": "史诗"
+                }
+              ],
+              "unitPrice": "49.90",
+              "quantity": 2,
+              "subtotal": "99.80",
+              "orderItemId": "50011",
+              "canReview": false,
+              "reviewId": null
+            }
+          ],
+          "deliveryInfo": {
+            "gameAccount": "demo_game_account",
+            "serverName": "一区",
+            "roleName": "星海旅人"
+          },
+          "remark": "请按角色名核对后交付。",
+          "cancelReason": null,
+          "payment": null,
+          "delivery": null,
+          "logs": [
+            {
+              "fromStatus": null,
+              "toStatus": "1",
+              "reason": "创建订单",
+              "createdAt": "2026-10-22T20:00:00+08:00"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "模拟支付失败但请求处理成功",
+      "operationId": "memberMockPay",
+      "request": {
+        "method": "POST",
+        "path": "/api/mall/orders/{orderNo}/payments",
+        "body": {
+          "result": "FAIL"
+        },
+        "pathParams": {
+          "orderNo": "GC202610222000000001"
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "outcome": "FAILED",
+          "order": {
+            "orderId": "5001",
+            "orderNo": "GC202610222000000001",
+            "status": "1",
+            "totalAmount": "99.80",
+            "totalQuantity": 2,
+            "itemCount": 1,
+            "currency": "CNY",
+            "createdAt": "2026-10-22T20:00:00+08:00",
+            "expiresAt": "2026-10-22T20:30:00+08:00",
+            "paidAt": null,
+            "cancelledAt": null,
+            "completedAt": null,
+            "serverTime": "2026-10-22T20:00:00+08:00",
+            "canPay": true,
+            "canCancel": true,
+            "items": [
+              {
+                "propId": "1001",
+                "propName": "星辉长剑",
+                "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+                "specs": [
+                  {
+                    "name": "品质",
+                    "value": "史诗"
+                  }
+                ],
+                "unitPrice": "49.90",
+                "quantity": 2,
+                "subtotal": "99.80",
+                "orderItemId": "50011",
+                "canReview": false,
+                "reviewId": null
+              }
+            ],
+            "deliveryInfo": {
+              "gameAccount": "demo_game_account",
+              "serverName": "一区",
+              "roleName": "星海旅人"
+            },
+            "remark": "请按角色名核对后交付。",
+            "cancelReason": null,
+            "payment": null,
+            "delivery": null,
+            "logs": [
+              {
+                "fromStatus": null,
+                "toStatus": "1",
+                "reason": "创建订单",
+                "createdAt": "2026-10-22T20:00:00+08:00"
+              }
+            ]
+          },
+          "paymentNo": null
+        }
+      }
+    },
+    {
+      "name": "过期订单禁止支付",
+      "operationId": "memberMockPay",
+      "request": {
+        "method": "POST",
+        "path": "/api/mall/orders/{orderNo}/payments",
+        "body": {
+          "result": "SUCCESS"
+        },
+        "pathParams": {
+          "orderNo": "GC202610222000000001"
+        }
+      },
+      "httpStatus": 409,
+      "response": {
+        "code": 409,
+        "msg": "订单已过期，无法支付。",
+        "errorCode": "MALL_ORDER_EXPIRED",
+        "data": {
+          "orderStatus": "1"
+        }
+      }
+    },
+    {
+      "name": "已交付完成可以评价",
+      "operationId": "memberGetOrder",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/orders/{orderNo}",
+        "pathParams": {
+          "orderNo": "GC202610222000000001"
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "code": 200,
+        "msg": "操作成功",
+        "data": {
+          "orderId": "5001",
+          "orderNo": "GC202610222000000001",
+          "status": "4",
+          "totalAmount": "99.80",
+          "totalQuantity": 2,
+          "itemCount": 1,
+          "currency": "CNY",
+          "createdAt": "2026-10-22T20:00:00+08:00",
+          "expiresAt": "2026-10-22T20:30:00+08:00",
+          "paidAt": "2026-10-22T20:00:00+08:00",
+          "cancelledAt": null,
+          "completedAt": "2026-10-22T20:00:00+08:00",
+          "serverTime": "2026-10-22T20:00:00+08:00",
+          "canPay": false,
+          "canCancel": false,
+          "items": [
+            {
+              "propId": "1001",
+              "propName": "星辉长剑",
+              "coverUrl": "/api/mall/media/0123456789abcdef0123456789abcdef.png",
+              "specs": [
+                {
+                  "name": "品质",
+                  "value": "史诗"
+                }
+              ],
+              "unitPrice": "49.90",
+              "quantity": 2,
+              "subtotal": "99.80",
+              "orderItemId": "50011",
+              "canReview": true,
+              "reviewId": null
+            }
+          ],
+          "deliveryInfo": {
+            "gameAccount": "demo_game_account",
+            "serverName": "一区",
+            "roleName": "星海旅人"
+          },
+          "remark": "请按角色名核对后交付。",
+          "cancelReason": null,
+          "payment": {
+            "paymentNo": "MP202610222001000001",
+            "channel": "MOCK",
+            "amount": "99.80",
+            "paidAt": "2026-10-22T20:00:00+08:00"
+          },
+          "delivery": {
+            "note": "已按角色名手动交付。",
+            "deliveredAt": "2026-10-22T20:00:00+08:00"
+          },
+          "logs": [
+            {
+              "fromStatus": null,
+              "toStatus": "1",
+              "reason": "创建订单",
+              "createdAt": "2026-10-22T20:00:00+08:00"
+            },
+            {
+              "fromStatus": "1",
+              "toStatus": "2",
+              "reason": "模拟支付成功",
+              "createdAt": "2026-10-22T20:00:00+08:00"
+            },
+            {
+              "fromStatus": "2",
+              "toStatus": "4",
+              "reason": "管理员登记交付并完成",
+              "createdAt": "2026-10-22T20:00:00+08:00"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "会员会话失效",
+      "operationId": "memberGetProfile",
+      "request": {
+        "method": "GET",
+        "path": "/api/mall/me"
+      },
+      "httpStatus": 401,
+      "response": {
+        "code": 401,
+        "msg": "请重新登录。",
+        "errorCode": "MALL_UNAUTHENTICATED",
+        "data": null
+      }
+    },
+    {
+      "name": "注册普通用户",
+      "operationId": "ruoyiRegister",
+      "httpStatus": 200,
+      "request": {
+        "body": {
+          "username": "shop_player",
+          "password": "Example123!",
+          "nickname": "商城玩家",
+          "email": "player@example.com",
+          "code": "7",
+          "uuid": "example-captcha"
+        }
+      },
+      "response": {
+        "code": 200,
+        "msg": "操作成功"
+      }
+    }
+  ],
+  "databaseVersion": "V007"
+}

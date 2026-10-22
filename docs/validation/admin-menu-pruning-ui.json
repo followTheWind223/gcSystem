@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-22",
+  "checks": [
+    "router API removes target branches and preserves seven mall routes and system administration",
+    "menu management API contains no removed entries",
+    "account and mall list APIs remain operational",
+    "sidebar and menu administration no longer display removed menus",
+    "removed route returns 404: /system/dept",
+    "removed route returns 404: /system/post",
+    "removed route returns 404: /monitor/online",
+    "removed route returns 404: /monitor/job",
+    "removed route returns 404: /monitor/druid",
+    "removed route returns 404: /monitor/server",
+    "removed route returns 404: /monitor/cache",
+    "removed route returns 404: /monitor/cacheList",
+    "removed route returns 404: /tool/build",
+    "removed route returns 404: /tool/gen",
+    "removed route returns 404: /tool/swagger",
+    "removed route returns 404: /monitor/job-log/index/1",
+    "removed route returns 404: /tool/gen-edit/index/1",
+    "mall page and operation area remain accessible",
+    "no browser runtime errors"
+  ],
+  "passed": 19,
+  "blockedBrowserRoutes": [
+    "/system/dept",
+    "/system/post",
+    "/monitor/online",
+    "/monitor/job",
+    "/monitor/druid",
+    "/monitor/server",
+    "/monitor/cache",
+    "/monitor/cacheList",
+    "/tool/build",
+    "/tool/gen",
+    "/tool/swagger",
+    "/monitor/job-log/index/1",
+    "/tool/gen-edit/index/1"
+  ],
+  "screenshots": "D:\\游戏商城系统\\.work\\menu-pruning-ui",
+  "source": "live backend and database, Edge browser"
+}

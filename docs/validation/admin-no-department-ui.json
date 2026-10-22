@@ -1,0 +1,19 @@
+{
+  "passed": 8,
+  "checks": [
+    "user list uses full content width without organization sidebar",
+    "search and reset work without a tree reference",
+    "new user form has no association selector",
+    "user details have no department field",
+    "profile card has no department field",
+    "data scope offers only all data and own data",
+    "role editor retains menu permissions without association controls",
+    "no department tree requests or browser runtime errors"
+  ],
+  "errors": [],
+  "deptRequests": [],
+  "date": "2026-10-23",
+  "scope": "admin frontend only; no database/schema changes",
+  "sourceScan": "No department or organization labels remain under adminsystemui/src",
+  "productionBuild": "passed, final scope payload included"
+}

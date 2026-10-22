@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-22",
+  "checks": [
+    "admin props thumbnails load from backend media route",
+    "admin product image preview",
+    "admin product details and image gallery",
+    "admin categories thumbnails load from backend media route",
+    "admin banners thumbnails load from backend media route",
+    "initial inventory entries visible",
+    "dashboard shows six on-sale products",
+    "storefront home uses live categories, products and hero image",
+    "three banners switch and link to their products",
+    "storefront catalogue images load",
+    "storefront product detail: 星辉长剑·青曜",
+    "storefront product detail: 曜金猎弓",
+    "storefront product detail: 星蝶护符",
+    "storefront product detail: 寒霜结晶",
+    "storefront product detail: 远征补给宝箱",
+    "storefront product detail: 先驱战术头盔",
+    "mobile catalogue images and layout",
+    "no browser runtime errors"
+  ],
+  "passed": 18,
+  "screenshots": "D:\\游戏商城系统\\.work\\display-catalog-ui",
+  "source": "live application data and backend-local images, Edge browser"
+}

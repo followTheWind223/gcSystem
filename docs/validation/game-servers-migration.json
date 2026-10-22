@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-23",
+  "version": "V006",
+  "backupCompleted": true,
+  "repeatExecution": "passed",
+  "existingDataUnchanged": [
+    "sys_user",
+    "sys_user_role",
+    "sys_role",
+    "sys_role_menu",
+    "sys_job",
+    "mall_game_category",
+    "mall_media",
+    "mall_prop",
+    "mall_prop_image",
+    "mall_banner",
+    "mall_member",
+    "mall_cart_item",
+    "mall_order",
+    "mall_order_item",
+    "mall_payment_record",
+    "mall_order_delivery",
+    "mall_order_log",
+    "mall_review",
+    "mall_stock_log"
+  ],
+  "serversPerGame": [
+    {
+      "category_id": 1,
+      "count": 3
+    },
+    {
+      "category_id": 2,
+      "count": 3
+    },
+    {
+      "category_id": 3,
+      "count": 3
+    }
+  ],
+  "defaultServerCount": 9,
+  "mallMenuPages": 8,
+  "tables": 47
+}

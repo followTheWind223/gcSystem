@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.gameshop.mapper.GameServerMapper">
+  <resultMap id="entity" type="com.ruoyi.gameshop.persistence.entity.GameServerEntity">
+    <id column="server_id" property="serverId"/><result column="category_id" property="categoryId"/>
+    <result column="name" property="name"/><result column="sort" property="sort"/><result column="status" property="status"/>
+    <result column="remark" property="remark"/><result column="version" property="version"/><result column="del_flag" property="delFlag"/>
+    <result column="create_time" property="createTime"/><result column="update_time" property="updateTime"/>
+    <result column="create_by" property="createBy"/><result column="update_by" property="updateBy"/>
+  </resultMap>
+  <resultMap id="row" type="com.ruoyi.gameshop.persistence.entity.GameServerRow" extends="entity">
+    <result column="category_name" property="categoryName"/>
+  </resultMap>
+  <sql id="filter">
+    WHERE s.del_flag='0' AND c.del_flag='0'
+    <if test="categoryId!=null">AND s.category_id=#{categoryId}</if>
+    <if test="keyword!=null">AND s.name LIKE CONCAT('%',#{keyword},'%')</if>
+    <if test="status!=null">AND s.status=#{status}</if>
+  </sql>
+  <select id="find" resultMap="entity">SELECT * FROM mall_game_server WHERE server_id=#{id}</select>
+  <select id="lock" resultMap="entity">SELECT * FROM mall_game_server WHERE server_id=#{id} FOR UPDATE</select>
+  <select id="row" resultMap="row">SELECT s.*,c.name category_name FROM mall_game_server s JOIN mall_game_category c ON c.category_id=s.category_id WHERE s.server_id=#{id} AND s.del_flag='0'</select>
+  <select id="lockByName" resultMap="entity">SELECT * FROM mall_game_server WHERE category_id=#{categoryId} AND name=#{name} AND del_flag='0' FOR UPDATE</select>
+  <select id="available" resultMap="entity">SELECT * FROM mall_game_server WHERE category_id=#{categoryId} AND del_flag='0' AND status='1' ORDER BY sort,server_id</select>
+  <select id="list" resultMap="row">SELECT s.*,c.name category_name FROM mall_game_server s JOIN mall_game_category c ON c.category_id=s.category_id <include refid="filter"/> ORDER BY c.sort,c.category_id,s.sort,s.server_id LIMIT #{limit} OFFSET #{offset}</select>
+  <select id="count" resultType="long">SELECT COUNT(*) FROM mall_game_server s JOIN mall_game_category c ON c.category_id=s.category_id <include refid="filter"/></select>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="serverId">INSERT INTO mall_game_server(category_id,name,sort,status,remark,create_by,update_by) VALUES(#{categoryId},#{name},#{sort},#{status},#{remark},#{createBy},#{updateBy})</insert>
+  <update id="update">UPDATE mall_game_server SET name=#{name},sort=#{sort},status=#{status},remark=#{remark},version=version+1,update_by=#{updateBy} WHERE server_id=#{serverId} AND version=#{version} AND del_flag='0'</update>
+  <update id="delete">UPDATE mall_game_server SET del_flag='2',status='0',version=version+1,update_by=#{actor} WHERE server_id=#{id} AND del_flag='0'</update>
+</mapper>

@@ -1,0 +1,411 @@
+{
+  "contractVersion": "2.0.0",
+  "operations": [
+    {
+      "operationId": "memberGetCaptcha",
+      "oldMethod": "GET",
+      "oldPath": "/api/mall/auth/captcha",
+      "method": "GET",
+      "path": "/api/mall/captcha"
+    },
+    {
+      "operationId": "memberSendEmailCode",
+      "oldMethod": "POST",
+      "oldPath": "/api/mall/auth/email-codes",
+      "method": "POST",
+      "path": "/api/mall/email-codes"
+    },
+    {
+      "operationId": "memberRegister",
+      "oldMethod": "POST",
+      "oldPath": "/api/mall/auth/register",
+      "method": "POST",
+      "path": "/api/mall/members"
+    },
+    {
+      "operationId": "memberLogin",
+      "oldMethod": "POST",
+      "oldPath": "/api/mall/auth/login",
+      "method": "POST",
+      "path": "/api/mall/sessions"
+    },
+    {
+      "operationId": "memberLogout",
+      "oldMethod": "POST",
+      "oldPath": "/api/mall/auth/logout",
+      "method": "DELETE",
+      "path": "/api/mall/sessions/current"
+    },
+    {
+      "operationId": "memberResetPassword",
+      "oldMethod": "POST",
+      "oldPath": "/api/mall/auth/password/reset",
+      "method": "POST",
+      "path": "/api/mall/password-resets"
+    },
+    {
+      "operationId": "memberGetProfile",
+      "oldMethod": "GET",
+      "oldPath": "/api/mall/me",
+      "method": "GET",
+      "path": "/api/mall/me"
+    },
+    {
+      "operationId": "memberUpdateProfile",
+      "oldMethod": "PUT",
+      "oldPath": "/api/mall/me",
+      "method": "PUT",
+      "path": "/api/mall/me"
+    },
+    {
+      "operationId": "memberChangePassword",
+      "oldMethod": "PUT",
+      "oldPath": "/api/mall/me/password",
+      "method": "PUT",
+      "path": "/api/mall/me/password"
+    },
+    {
+      "operationId": "memberUploadAvatar",
+      "oldMethod": "POST",
+      "oldPath": "/api/mall/me/avatar",
+      "method": "POST",
+      "path": "/api/mall/me/avatar"
+    },
+    {
+      "operationId": "mallGetHome",
+      "oldMethod": "GET",
+      "oldPath": "/api/mall/home",
+      "method": "GET",
+      "path": "/api/mall/home"
+    },
+    {
+      "operationId": "mallListCategories",
+      "oldMethod": "GET",
+      "oldPath": "/api/mall/categories",
+      "method": "GET",
+      "path": "/api/mall/categories"
+    },
+    {
+      "operationId": "mallListProps",
+      "oldMethod": "GET",
+      "oldPath": "/api/mall/props",
+      "method": "GET",
+      "path": "/api/mall/props"
+    },
+    {
+      "operationId": "mallGetProp",
+      "oldMethod": "GET",
+      "oldPath": "/api/mall/props/{propId}",
+      "method": "GET",
+      "path": "/api/mall/props/{propId}"
+    },
+    {
+      "operationId": "mallListPropReviews",
+      "oldMethod": "GET",
+      "oldPath": "/api/mall/props/{propId}/reviews",
+      "method": "GET",
+      "path": "/api/mall/props/{propId}/reviews"
+    },
+    {
+      "operationId": "mallGetPublicImage",
+      "oldMethod": "GET",
+      "oldPath": "/api/mall/media/{fileName}",
+      "method": "GET",
+      "path": "/api/mall/media/{fileName}"
+    },
+    {
+      "operationId": "memberGetCart",
+      "oldMethod": "GET",
+      "oldPath": "/api/mall/cart/items",
+      "method": "GET",
+      "path": "/api/mall/cart/items"
+    },
+    {
+      "operationId": "memberAddCartItem",
+      "oldMethod": "POST",
+      "oldPath": "/api/mall/cart/items",
+      "method": "POST",
+      "path": "/api/mall/cart/items"
+    },
+    {
+      "operationId": "memberUpdateCartItem",
+      "oldMethod": "PUT",
+      "oldPath": "/api/mall/cart/items/{cartItemId}",
+      "method": "PUT",
+      "path": "/api/mall/cart/items/{cartItemId}"
+    },
+    {
+      "operationId": "memberDeleteCartItem",
+      "oldMethod": "DELETE",
+      "oldPath": "/api/mall/cart/items/{cartItemId}",
+      "method": "DELETE",
+      "path": "/api/mall/cart/items/{cartItemId}"
+    },
+    {
+      "operationId": "memberSelectCartItems",
+      "oldMethod": "PUT",
+      "oldPath": "/api/mall/cart/selection",
+      "method": "PUT",
+      "path": "/api/mall/cart/selection"
+    },
+    {
+      "operationId": "memberPreviewOrder",
+      "oldMethod": "POST",
+      "oldPath": "/api/mall/orders/preview",
+      "method": "POST",
+      "path": "/api/mall/order-quotes"
+    },
+    {
+      "operationId": "memberCreateOrder",
+      "oldMethod": "POST",
+      "oldPath": "/api/mall/orders",
+      "method": "POST",
+      "path": "/api/mall/orders"
+    },
+    {
+      "operationId": "memberListOrders",
+      "oldMethod": "GET",
+      "oldPath": "/api/mall/orders",
+      "method": "GET",
+      "path": "/api/mall/orders"
+    },
+    {
+      "operationId": "memberGetOrder",
+      "oldMethod": "GET",
+      "oldPath": "/api/mall/orders/{orderNo}",
+      "method": "GET",
+      "path": "/api/mall/orders/{orderNo}"
+    },
+    {
+      "operationId": "memberCancelOrder",
+      "oldMethod": "POST",
+      "oldPath": "/api/mall/orders/{orderNo}/cancel",
+      "method": "PUT",
+      "path": "/api/mall/orders/{orderNo}/cancellation"
+    },
+    {
+      "operationId": "memberMockPay",
+      "oldMethod": "POST",
+      "oldPath": "/api/mall/orders/{orderNo}/mock-pay",
+      "method": "POST",
+      "path": "/api/mall/orders/{orderNo}/payments"
+    },
+    {
+      "operationId": "memberListMyReviews",
+      "oldMethod": "GET",
+      "oldPath": "/api/mall/me/reviews",
+      "method": "GET",
+      "path": "/api/mall/me/reviews"
+    },
+    {
+      "operationId": "memberCreateReview",
+      "oldMethod": "POST",
+      "oldPath": "/api/mall/reviews",
+      "method": "POST",
+      "path": "/api/mall/reviews"
+    },
+    {
+      "operationId": "adminListCategories",
+      "oldMethod": "GET",
+      "oldPath": "/mall/categories/list",
+      "method": "GET",
+      "path": "/mall/categories"
+    },
+    {
+      "operationId": "adminCreateCategory",
+      "oldMethod": "POST",
+      "oldPath": "/mall/categories",
+      "method": "POST",
+      "path": "/mall/categories"
+    },
+    {
+      "operationId": "adminGetCategory",
+      "oldMethod": "GET",
+      "oldPath": "/mall/categories/{categoryId}",
+      "method": "GET",
+      "path": "/mall/categories/{categoryId}"
+    },
+    {
+      "operationId": "adminUpdateCategory",
+      "oldMethod": "PUT",
+      "oldPath": "/mall/categories/{categoryId}",
+      "method": "PUT",
+      "path": "/mall/categories/{categoryId}"
+    },
+    {
+      "operationId": "adminDeleteCategory",
+      "oldMethod": "DELETE",
+      "oldPath": "/mall/categories/{categoryId}",
+      "method": "DELETE",
+      "path": "/mall/categories/{categoryId}"
+    },
+    {
+      "operationId": "adminListBanners",
+      "oldMethod": "GET",
+      "oldPath": "/mall/banners/list",
+      "method": "GET",
+      "path": "/mall/banners"
+    },
+    {
+      "operationId": "adminCreateBanner",
+      "oldMethod": "POST",
+      "oldPath": "/mall/banners",
+      "method": "POST",
+      "path": "/mall/banners"
+    },
+    {
+      "operationId": "adminGetBanner",
+      "oldMethod": "GET",
+      "oldPath": "/mall/banners/{bannerId}",
+      "method": "GET",
+      "path": "/mall/banners/{bannerId}"
+    },
+    {
+      "operationId": "adminUpdateBanner",
+      "oldMethod": "PUT",
+      "oldPath": "/mall/banners/{bannerId}",
+      "method": "PUT",
+      "path": "/mall/banners/{bannerId}"
+    },
+    {
+      "operationId": "adminDeleteBanner",
+      "oldMethod": "DELETE",
+      "oldPath": "/mall/banners/{bannerId}",
+      "method": "DELETE",
+      "path": "/mall/banners/{bannerId}"
+    },
+    {
+      "operationId": "adminListProps",
+      "oldMethod": "GET",
+      "oldPath": "/mall/props/list",
+      "method": "GET",
+      "path": "/mall/props"
+    },
+    {
+      "operationId": "adminCreateProp",
+      "oldMethod": "POST",
+      "oldPath": "/mall/props",
+      "method": "POST",
+      "path": "/mall/props"
+    },
+    {
+      "operationId": "adminGetProp",
+      "oldMethod": "GET",
+      "oldPath": "/mall/props/{propId}",
+      "method": "GET",
+      "path": "/mall/props/{propId}"
+    },
+    {
+      "operationId": "adminUpdateProp",
+      "oldMethod": "PUT",
+      "oldPath": "/mall/props/{propId}",
+      "method": "PUT",
+      "path": "/mall/props/{propId}"
+    },
+    {
+      "operationId": "adminDeleteProp",
+      "oldMethod": "DELETE",
+      "oldPath": "/mall/props/{propId}",
+      "method": "DELETE",
+      "path": "/mall/props/{propId}"
+    },
+    {
+      "operationId": "adminSetPropStatus",
+      "oldMethod": "PUT",
+      "oldPath": "/mall/props/{propId}/status",
+      "method": "PUT",
+      "path": "/mall/props/{propId}/status"
+    },
+    {
+      "operationId": "adminUploadMallImage",
+      "oldMethod": "POST",
+      "oldPath": "/mall/media/images",
+      "method": "POST",
+      "path": "/mall/media/images"
+    },
+    {
+      "operationId": "adminListMembers",
+      "oldMethod": "GET",
+      "oldPath": "/mall/members/list",
+      "method": "GET",
+      "path": "/mall/members"
+    },
+    {
+      "operationId": "adminGetMember",
+      "oldMethod": "GET",
+      "oldPath": "/mall/members/{memberId}",
+      "method": "GET",
+      "path": "/mall/members/{memberId}"
+    },
+    {
+      "operationId": "adminSetMemberStatus",
+      "oldMethod": "PUT",
+      "oldPath": "/mall/members/{memberId}/status",
+      "method": "PUT",
+      "path": "/mall/members/{memberId}/status"
+    },
+    {
+      "operationId": "adminListOrders",
+      "oldMethod": "GET",
+      "oldPath": "/mall/orders/list",
+      "method": "GET",
+      "path": "/mall/orders"
+    },
+    {
+      "operationId": "adminGetOrder",
+      "oldMethod": "GET",
+      "oldPath": "/mall/orders/{orderId}",
+      "method": "GET",
+      "path": "/mall/orders/{orderId}"
+    },
+    {
+      "operationId": "adminCancelOrder",
+      "oldMethod": "POST",
+      "oldPath": "/mall/orders/{orderId}/cancel",
+      "method": "PUT",
+      "path": "/mall/orders/{orderId}/cancellation"
+    },
+    {
+      "operationId": "adminCompleteOrder",
+      "oldMethod": "POST",
+      "oldPath": "/mall/orders/{orderId}/complete",
+      "method": "PUT",
+      "path": "/mall/orders/{orderId}/delivery"
+    },
+    {
+      "operationId": "adminListReviews",
+      "oldMethod": "GET",
+      "oldPath": "/mall/reviews/list",
+      "method": "GET",
+      "path": "/mall/reviews"
+    },
+    {
+      "operationId": "adminGetReview",
+      "oldMethod": "GET",
+      "oldPath": "/mall/reviews/{reviewId}",
+      "method": "GET",
+      "path": "/mall/reviews/{reviewId}"
+    },
+    {
+      "operationId": "adminHideReview",
+      "oldMethod": "POST",
+      "oldPath": "/mall/reviews/{reviewId}/hide",
+      "method": "PUT",
+      "path": "/mall/reviews/{reviewId}/visibility"
+    },
+    {
+      "operationId": "adminAdjustStock",
+      "oldMethod": "POST",
+      "oldPath": "/mall/props/{propId}/stock-adjustments",
+      "method": "POST",
+      "path": "/mall/props/{propId}/stock-adjustments"
+    },
+    {
+      "operationId": "adminListStockLogs",
+      "oldMethod": "GET",
+      "oldPath": "/mall/stock-logs/list",
+      "method": "GET",
+      "path": "/mall/stock-logs"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+# 本机开发：连接信息及密钥从 system/.env 或进程环境变量读取。
+springdoc:
+  api-docs:
+    enabled: ${API_DOCS_ENABLED:true}
+  swagger-ui:
+    enabled: ${API_DOCS_ENABLED:true}

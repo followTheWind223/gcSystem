@@ -1,15 +1,21 @@
 # Dependencies and build output
+.cache/
 **/node_modules/
 **/dist/
 **/target/
 **/.vite/
 **/coverage/
+**/__pycache__/
+*.pyc
 
 # Local environment and private configuration; keep examples versioned
 .env
 .env.*
 !.env.example
 !.env.*.example
+!/adminsystemui/.env.development
+!/adminsystemui/.env.production
+!/adminsystemui/.env.staging
 **/application-local.yml
 **/application-local.yaml
 **/application-local.properties
@@ -21,6 +27,7 @@
 **/uploads/
 **/upload/
 *.pid
+/system/data/
 
 # Developer-specific files
 .idea/

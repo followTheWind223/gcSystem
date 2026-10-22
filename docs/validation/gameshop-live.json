@@ -1,0 +1,8 @@
+{
+  "backendHome": "passed",
+  "adminPublicMallProxy": "passed",
+  "adminLoginAndRoutes": "passed",
+  "mallMenuPages": 7,
+  "adminRestListing": "passed",
+  "currentProductCount": 0
+}

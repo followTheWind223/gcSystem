@@ -1,0 +1,101 @@
+{
+  "mysqlVersion": "8.3.0",
+  "sqlMode": "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION",
+  "applicationMallTablesBefore": 0,
+  "tables": 15,
+  "nullabilityMismatches": [],
+  "checks": [
+    {
+      "case": "会员用户名唯一",
+      "result": "rejected",
+      "mysqlCode": 1062
+    },
+    {
+      "case": "同会员同商品购物车唯一",
+      "result": "rejected",
+      "mysqlCode": 1062
+    },
+    {
+      "case": "购物车数量不能为零",
+      "result": "rejected",
+      "mysqlCode": 3819
+    },
+    {
+      "case": "可售库存不能为负",
+      "result": "rejected",
+      "mysqlCode": 3819
+    },
+    {
+      "case": "商品分类外键",
+      "result": "rejected",
+      "mysqlCode": 1452
+    },
+    {
+      "case": "订单会员幂等键唯一",
+      "result": "rejected",
+      "mysqlCode": 1062
+    },
+    {
+      "case": "待支付不能缺时间直接改成已支付",
+      "result": "rejected",
+      "mysqlCode": 3819
+    },
+    {
+      "case": "一单一次成功支付",
+      "result": "rejected",
+      "mysqlCode": 1062
+    },
+    {
+      "case": "交付记录一单唯一",
+      "result": "rejected",
+      "mysqlCode": 1062
+    },
+    {
+      "case": "库存日志算术一致",
+      "result": "rejected",
+      "mysqlCode": 3819
+    },
+    {
+      "case": "库存业务键唯一",
+      "result": "rejected",
+      "mysqlCode": 1062
+    },
+    {
+      "case": "评价不能冒用订单归属",
+      "result": "rejected",
+      "mysqlCode": 1452
+    },
+    {
+      "case": "同一订单明细不得重复评价",
+      "result": "rejected",
+      "mysqlCode": 1062
+    },
+    {
+      "case": "隐藏评价必须记录原因和操作者",
+      "result": "rejected",
+      "mysqlCode": 3819
+    },
+    {
+      "case": "非法跨步订单日志",
+      "result": "rejected",
+      "mysqlCode": 3819
+    },
+    {
+      "case": "条件扣库存 SQL 及事务回滚",
+      "result": "passed"
+    },
+    {
+      "case": "版本条件拒绝旧值覆盖",
+      "result": "passed"
+    }
+  ],
+  "demoFacts": {
+    "orders": 5,
+    "stock": 8,
+    "sales": 5,
+    "stockEqualsLedgerSum": true,
+    "orderTotalsEqualItems": true
+  },
+  "applicationMallTablesAfter": 0,
+  "scratchDatabaseCleaned": true
+}

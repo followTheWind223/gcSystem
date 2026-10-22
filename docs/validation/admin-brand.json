@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-22",
+  "checks": [
+    "default administrator display",
+    "mall menu priority and promotion removal",
+    "login brand, empty credentials and image loading",
+    "mobile login layout",
+    "live dashboard totals, seven shortcuts and branding",
+    "dashboard to filtered paid orders",
+    "cached order page filter changes",
+    "on-sale product route filter",
+    "mall announcements",
+    "dark dashboard",
+    "mobile dashboard layout",
+    "failed dashboard request is not displayed as zero",
+    "dashboard retry recovers",
+    "permission-aware dashboard requests and shortcuts",
+    "no browser runtime errors"
+  ],
+  "passed": 15,
+  "source": "live MySQL / Redis / HTTP and Edge browser",
+  "screenshots": "D:\\游戏商城系统\\.work\\shop-brand-ui"
+}

@@ -1,0 +1,11 @@
+# 测试库和 Redis 库必须单独指定，避免误用开发数据。
+spring:
+  datasource:
+    druid:
+      master:
+        url: ${TEST_DB_URL}
+        username: ${TEST_DB_USERNAME}
+        password: ${TEST_DB_PASSWORD}
+  data:
+    redis:
+      database: ${TEST_REDIS_DATABASE}

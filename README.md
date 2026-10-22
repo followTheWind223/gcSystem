@@ -1,93 +1,106 @@
 # gcSystem · 游戏道具商城
 
-基于 Spring Boot 与 Vue 的虚拟游戏道具商城，包含商城用户端、管理员后台和统一后端。后台与后端计划基于官方若依框架二次开发，完成道具浏览、购物车、下单、模拟支付、虚拟交付与评价的业务闭环。
+用户端和管理端共用若依原生登录/注册。新账号默认普通用户 common，仅可使用商城；后台页面与接口均限制访问。原商城账号已经迁移到 sys_user，保留密码和交易归属。详见 [统一认证与权限](./docs/api/若依统一认证.md)。
 
-> 当前阶段：需求梳理与架构规划已完成，业务工程尚未初始化，暂不提供可运行的商城程序。下文技术栈与功能均为开发规划，实际进度以代码及验收记录为准。
-
-## 项目地址
-
-[followTheWind223/gcSystem](https://github.com/followTheWind223/gcSystem)
-
-远程仓库名称为 `gcSystem`，三个工程目录沿用 `gsSystem` 命名，不影响后续构建与运行。
+虚拟游戏道具商城课程项目，采用前后端分离。若依 Spring Boot 3 后端已实现独立 gameshop 模块及 57 个商城业务接口，认证复用若依原生接口；管理端八个页面已接入真实接口，商城用户端位于 systemUI。
 
 ## 项目结构
 
 ```text
 gcSystem/
-├── README.md                      # 项目说明与文档入口
-├── AGENTS.md                      # 开发约束、项目记忆和进度维护规则
-├── docs/
-│   ├── 开题(2).doc                 # 原始需求说明
-│   └── 开发流程与架构设计.md        # 架构、开发阶段与验收要求
-├── gsSystemUI/                    # 商城用户端，待初始化
-├── gsSystemAdminUI/               # 若依管理端，待初始化
-└── gsSystem/                      # 若依后端，待初始化
+├── system/              # RuoYi-Vue springboot3，Maven 多模块后端
+├── adminsystemui/       # RuoYi-Vue3 管理端，Vue 3 + Vite
+├── systemUI/            # Vue 3 商城用户端
+├── sql/                 # 完整数据库快照、上传图片包及迁移说明
+├── deploy/nginx/        # 管理端部署代理示例
+├── docs/                # 需求、架构、上游与环境验证记录
+└── AGENTS.md            # 开发约束和项目进度
 ```
 
-空工程目录使用 `.gitkeep` 保留。仓库根目录名称由本地克隆位置决定，不要求与三个工程目录同名。
+按本次用户指令，后端目录由 `gsSystem` 调整为 `system`，管理端由 `gsSystemAdminUI` 调整为 `adminsystemui`。源码导入时排除了上游 `.git`，许可证分别保留在两工程的 `LICENSE`。
 
-## 计划功能
+用户端工程目录当前为 `systemUI`，替代原 `gsSystemUI`；用户端交接与工程初始化都使用当前目录。
 
-| 模块 | 首版范围 |
-| --- | --- |
-| 商城门户 | 轮播图、热门分类、热销道具、公开浏览 |
-| 道具 | 分类/价格筛选、销量/上架时间排序、详情、多图、库存与评价展示 |
-| 会员 | 注册、登录、退出、邮箱验证与找回密码、个人资料与密码修改 |
-| 购物车 | 添加、修改数量、删除、勾选与批量结算 |
-| 订单 | 立即购买、订单预览、事务下单、我的订单、取消与超时关闭 |
-| 模拟支付与交付 | 模拟支付结果、管理员登记虚拟交付并完成订单 |
-| 评价 | 已完成订单评价、我的评价、违规评价管理 |
-| 管理后台 | 分类、道具、图片、轮播、会员启停、订单、评价、库存与操作日志 |
+## 环境与启动
 
-首版采用自营、单商品单库存与手动登记交付模式；仅模拟支付，不发生真实扣款。真实支付、退款、多商户、多规格 SKU、自动卡密和游戏接口对接作为后续扩展。
+后端以 JDK 17 编译，Maven Wrapper 固定 3.9.10；管理端固定 Node.js 24.20.0、npm 11.19.0。当前本机数据库为 MySQL 8.3.0，Redis 为 5.0.14.1；MySQL 8.0 部署环境仍需单独验证。
 
-## 架构与技术基线
+后端配置：`system/.env`（本地私密文件，Git 忽略），模板为 `system/.env.example`。本机文件已生成独立随机 JWT 密钥，数据库密码由使用者在本地填写。Spring 自动从 `system` 工作目录读取该文件；IDE 的 Working directory 也必须设为 `system`。详见 [环境配置与验证](./docs/环境配置与验证.md)。
 
-整体采用“两套独立前端 + 一个模块化单体后端 + MySQL + Redis”。商城会员和后台管理员使用独立账号、认证与授权边界；交易以数据库事务、条件更新及唯一约束保证一致性。
+首次在新环境使用时复制模板，填写数据库连接、密码和随机 `TOKEN_SECRET`。迁移现有数据使用下方的完整备份；从零初始化则按 [增量 SQL 说明](./system/sql/README.md) 执行。两种方式不要混用，不要在已有业务库直接执行上游建表脚本。
 
-| 部分 | 计划技术 |
-| --- | --- |
-| 商城用户端 | Vue 3、Vite、JavaScript、Vue Router 4、Pinia、Axios、Element Plus |
-| 管理端 | 官方 RuoYi-Vue3 二次开发 |
-| 后端 | JDK 17、官方 RuoYi-Vue `springboot3` 分支、Spring Boot 3.x、Spring Security、MyBatis/XML、Maven |
-| 数据与会话 | MySQL 8.0、Redis |
-| 任务与部署 | 若依 Quartz、Nginx、Spring Boot Jar |
-| 前端工具 | 拟采用 Node.js 24 LTS、npm；初始化时核验兼容性并锁定版本 |
+在 PowerShell 中启动后端：
 
-若依源码尚未导入。正式初始化时记录上游版本、提交 SHA 和许可证，并核验工具链兼容性；不要直接把若依默认分支视为 Spring Boot 3。详细取舍及与原需求的差异见架构文档。
-
-## 开发路线
-
-- [x] 梳理原始功能需求。
-- [x] 编制架构设计、开发流程和验收标准。
-- [x] 建立 AGENTS.md 项目记忆。
-- [ ] S0：初始化若依后端、管理端与 Vue 商城工程，验证环境与代理。
-- [ ] S1：数据库与会员认证，验证两类身份隔离。
-- [ ] S2：商品、分类、图片、轮播与商城门户。
-- [ ] S3：购物车与结算预览。
-- [ ] S4：订单、库存、幂等、模拟支付与超时关闭。
-- [ ] S5：虚拟交付、评价与后台运营权限。
-- [ ] S6：联调、异常与并发验证、部署和演示验收。
-
-## 获取项目与运行说明
-
-```bash
-git clone https://github.com/followTheWind223/gcSystem.git
-cd gcSystem
+```powershell
+cd system
+# JAVA_HOME 指向 JDK 17 或更高版本，避免 PATH 中旧 Java 抢先。
+.\mvnw.cmd -B clean package
+.\start.ps1
+# 后续源码变更后可用 .\start.ps1 -Build 重新构建并启动。
 ```
 
-当前仓库仅包含需求与规划文档以及工程目录占位文件，没有 `pom.xml`、`package.json` 或数据库初始化脚本，因此尚不能启动或构建。完成 S0 后会补充各工程的依赖安装、环境配置、数据库初始化、启动及验证命令。
+在另一终端启动管理端：
 
-数据库、Redis、JWT 和邮件凭证使用外置配置，不提交真实密码、令牌或本地私密配置。前端环境变量会被打包到公开资源中，不存放密钥。
+```powershell
+cd adminsystemui
+npm ci
+npm run dev
+```
 
-## 文档入口
+访问 [管理后台](http://127.0.0.1:5174)，后端监听 `127.0.0.1:8080`。初始后台账号沿用若依种子数据 `admin / admin123`，仅用于本机首次登录，部署前修改。
 
-- [开发流程与架构设计](./docs/开发流程与架构设计.md)：功能映射、技术选型、模块划分、数据模型、订单状态机、API 约定、阶段计划和验收要求。
-- [AGENTS.md](./AGENTS.md)：长期开发约束、项目现状、关键业务规则以及记忆更新方式。
-- [原始需求说明](./docs/开题(2).doc)：项目开题与功能说明原文。
+开发、测试构建、生产构建均使用 `/admin-api`；Vite 和 Nginx 均将此前缀去掉后转发到后端。端口和代理目标可在 `adminsystemui/.env.local` 覆盖，前端环境文件禁止存放私密凭证。
 
-开始实现前先阅读相关设计；技术、接口或业务规则发生变化时同步更新文档。只有完成并经过实际验证的功能才标记为已完成。
+```powershell
+# 管理端生产构建
+npm run build:prod
+# 管理端预发布构建
+npm run build:stage
+```
 
-## 上游项目与许可
+管理端默认禁用依赖安装脚本，npm 缓存位于根目录 `.cache/npm`，锁文件 `package-lock.json` 纳入版本控制。没有额外的 `test` 或 `lint` 脚本。
 
-计划使用 [RuoYi-Vue](https://github.com/yangzongzhuan/RuoYi-Vue) 和 [RuoYi-Vue3](https://github.com/yangzongzhuan/RuoYi-Vue3) 作为开发基础。导入时保留其版权与许可证文件，并记录本项目的修改范围。本项目自身的开源许可证尚未选定。
+## 数据库与现有数据迁移
+
+完整备份已放在项目根目录的 [sql/](./sql/README.md)，快照时间为 **2026-10-23 01:39:35（Asia/Shanghai）**。
+
+- [gc_system_full.sql](./sql/gc_system_full.sql)：47 张表、470 条记录，包含完整表结构、现有账号权限、商品、订单、购物车、配置、日志和 V001–V007 版本记录。
+- [uploads.zip](./sql/uploads.zip)：7 个上传图片文件，恢复数据库时需要一起迁移。
+- [校验结果.json](./sql/校验结果.json)：逐表行数与 SHA-256；已在临时空库验证全部数据及表结构恢复一致。
+
+先停止目标环境后端，使用 MySQL 客户端连接目标实例（密码交互输入）：
+
+```powershell
+mysql --default-character-set=utf8mb4 -h 127.0.0.1 -P 3306 -u root -p
+```
+
+然后在 MySQL 客户端执行，路径按目标机器实际位置调整：
+
+```sql
+SOURCE D:/游戏商城系统/gcSystem/sql/gc_system_full.sql;
+```
+
+**SQL 自带建库和 `USE gc_system`，并会替换同名表，请在空环境或确认可覆盖的目标库导入。** 将 `uploads.zip` 解压到 `system/data/`，保留 `system/data/uploads/` 层级；配置目标 `system/.env` 的数据库、Redis 和上传目录后启动项目。完整备份已经包含 V001–V007，无需再次执行上游 SQL、增量迁移或演示脚本。账号密码保持原样，迁移后重新登录。
+
+详细环境要求、Linux 路径示例和校验方法见 [sql/README.md](./sql/README.md)。
+
+## 当前开发范围
+
+已实现若依统一认证、商品、门户、图片、购物车、报价、订单、模拟支付、取消/超时关单、交付、评价及后台管理。业务位于 [gameshop 模块](./system/gameshop/README.md)，按 Controller/Service/Mapper 分层，DTO/BO/Query/Entity/Result/VO 分离。管理端“游戏商城”下有分类、商品、轮播、会员、订单、评价、库存流水及游戏区服八页，包含实际操作区与权限按钮。
+
+应用库已备份并应用 V001–V007，当前共 47 表；没有导入演示订单或会员。后台首页已替换为真实数据的商城工作台，登录页、标识、默认公告和菜单均已商城化。已按用户要求移除部门/岗位、系统监控、系统工具及其后代菜单和路由。登录后台后刷新菜单即可进入 `/gameshop/props` 等页面，创建商品前先创建分类并上传图片。当前契约为 3.0.0，对接前查看[路径迁移对照](./docs/api/REST迁移说明.md)。验证范围见[后端与后台验收](./docs/后端与后台验收.md)。
+
+已按用户授权加入 3 个游戏分类、6 件商品和 3 条轮播，7 张图片实际存储在后端 `system/data/uploads/mall`，统一通过 `/api/mall/media/{fileName}` 读取。后台有缩略图与预览；刷新 [商城](http://127.0.0.1:5173) 或 [商品管理](http://127.0.0.1:5174/gameshop/props) 即可查看。[素材、生成提示与可重复导入说明](./system/assets/display-catalog/README.md)随工程保存。
+
+## 文档
+
+- [数据库设计与字段字典](./docs/database/README.md)：V001 结构、14 张业务表、1 张版本表、169 字段；V002 关单任务、V003 后台路由及权限、V004 默认展示、V005 菜单精简已应用到开发库。
+- [商城接口设计](./docs/api/README.md)：契约 3.0.0；[用户端详细接口](./docs/api/用户端接口详细说明.md)和[管理端详细接口](./docs/api/管理端接口详细说明.md)逐项列出请求/返回字段及完整成功、失败 JSON，含 OpenAPI 和 Mock 示例。
+- [用户端开发交接](./docs/用户端开发交接.md)：供独立用户端开发使用的页面映射、请求封装、Mock 与协作边界。
+- [环境配置与验证](./docs/环境配置与验证.md)：端口、私密配置、数据库初始化、实际验证与遗留项。
+- [上游源码记录](./docs/上游源码记录.md)：仓库、分支、完整提交 SHA、许可证和本地修改。
+- [开发流程与架构设计](./docs/开发流程与架构设计.md)：业务范围、数据模型、状态机、接口和阶段门槛。
+- [AGENTS.md](./AGENTS.md)：长期约束与真实进度。
+- [原始需求](./docs/开题(2).doc)：原文件保留。
+
+项目仓库：[followTheWind223/gcSystem](https://github.com/followTheWind223/gcSystem)。本项目自身的开源许可证尚未选定，上游 MIT 版权与许可保持原样。

@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-22",
+  "dataset": "display-catalog-v1",
+  "backupCompleted": true,
+  "categories": 3,
+  "products": 6,
+  "banners": 3,
+  "images": [
+    {
+      "url": "/api/mall/media/81760a5128d34ca3bf6cba8b8205a8db.png",
+      "relativePath": "mall/2026/10/22/81760a5128d34ca3bf6cba8b8205a8db.png",
+      "bytes": 2345273,
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "url": "/api/mall/media/a05a1d3d258c4c49ae389121e301f995.png",
+      "relativePath": "mall/2026/10/22/a05a1d3d258c4c49ae389121e301f995.png",
+      "bytes": 2629539,
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "url": "/api/mall/media/c513bbc770584534900367663e08334c.png",
+      "relativePath": "mall/2026/10/22/c513bbc770584534900367663e08334c.png",
+      "bytes": 2128440,
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "url": "/api/mall/media/62f23482419b415a8fafb746bc149542.png",
+      "relativePath": "mall/2026/10/22/62f23482419b415a8fafb746bc149542.png",
+      "bytes": 2917733,
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "url": "/api/mall/media/440b9b64fc7a4d0e97a8ec278b034da4.png",
+      "relativePath": "mall/2026/10/22/440b9b64fc7a4d0e97a8ec278b034da4.png",
+      "bytes": 1798788,
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "url": "/api/mall/media/38698866f5824cce9275ea5ea2bff919.png",
+      "relativePath": "mall/2026/10/22/38698866f5824cce9275ea5ea2bff919.png",
+      "bytes": 2802526,
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "url": "/api/mall/media/3229fecbb9da46da8a2879472e536fea.png",
+      "relativePath": "mall/2026/10/22/3229fecbb9da46da8a2879472e536fea.png",
+      "bytes": 2415162,
+      "width": 1254,
+      "height": 1254
+    }
+  ],
+  "mediaRoot": "D:\\游戏商城系统\\gcSystem\\system\\data\\uploads",
+  "imageRoute": "/api/mall/media/{fileName}",
+  "allImagesReachableThroughBackendAdminAndStorefront": true,
+  "inventoryInitialLogs": 6,
+  "repeatExecution": "passed",
+  "unrelatedTablesUnchanged": [
+    "sys_menu",
+    "sys_role_menu",
+    "sys_user",
+    "sys_role",
+    "sys_dept",
+    "sys_post",
+    "sys_job",
+    "mall_member",
+    "mall_cart_item",
+    "mall_order",
+    "mall_order_item",
+    "mall_payment_record",
+    "mall_order_delivery",
+    "mall_order_log",
+    "mall_review"
+  ],
+  "totals": {
+    "mall_game_category": 3,
+    "mall_prop": 6,
+    "mall_prop_image": 6,
+    "mall_banner": 3,
+    "mall_media": 7,
+    "mall_stock_log": 6
+  },
+  "fakeSalesOrdersOrMembersCreated": false
+}

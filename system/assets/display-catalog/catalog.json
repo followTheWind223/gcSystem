@@ -1,0 +1,21 @@
+{
+  "dataset": "display-catalog-v1",
+  "categories": [
+    {"key":"star-sea","name":"星海远征","icon":"starblade","sort":10},
+    {"key":"eternal-realm","name":"永恒之境","icon":"sunbow","sort":20},
+    {"key":"mecha-frontier","name":"机甲前线","icon":"vanguard-helmet","sort":30}
+  ],
+  "products": [
+    {"key":"starblade","name":"星辉长剑·青曜","category":"star-sea","price":"129.00","originalPrice":"199.00","stock":25,"type":"近战武器","quality":"传说","description":"银色剑身嵌入青曜晶核，流动的星辉沿刃面汇聚。适合星海远征中的近战角色，完整展示青色光效与金属纹理。"},
+    {"key":"sunbow","name":"曜金猎弓","category":"eternal-realm","price":"99.00","originalPrice":"159.00","stock":40,"type":"远程武器","quality":"史诗","description":"曜金弓臂搭配琥珀能量弦，黑金结构兼顾锋利线条与华丽纹饰。适合永恒之境中的远程角色。"},
+    {"key":"astral-charm","name":"星蝶护符","category":"eternal-realm","price":"69.90","originalPrice":"99.00","stock":60,"type":"角色饰品","quality":"史诗","description":"以蝶翼与星月为灵感的紫晶护符，细致的银色镶边包裹流光宝石，为角色增添星空主题的装饰效果。"},
+    {"key":"frost-crystal","name":"寒霜结晶","category":"star-sea","price":"19.90","originalPrice":"29.90","stock":200,"type":"强化材料","quality":"稀有","description":"凝聚寒霜能量的蓝色晶簇，环绕银色符文圆环。用于星海远征中的装备强化展示，每件按一份材料交付。"},
+    {"key":"supply-chest","name":"远征补给宝箱","category":"eternal-realm","price":"29.90","originalPrice":"49.00","stock":100,"type":"补给道具","quality":"稀有","description":"复古黄铜箱体搭配日轮徽记与金色光效。此商品交付一件固定补给宝箱道具，不包含抽奖或随机付费奖励。"},
+    {"key":"vanguard-helmet","name":"先驱战术头盔","category":"mecha-frontier","price":"159.00","originalPrice":"229.00","stock":18,"type":"角色装备","quality":"传说","description":"红黑装甲与发光面罩组成的未来战术头盔，细致呈现机械关节、护甲拼接和能量灯带，适合机甲前线主题角色。"}
+  ],
+  "banners": [
+    {"key":"star-sea-feature","title":"星海远征 · 星辉长剑","image":"starblade-banner","product":"starblade","sort":10},
+    {"key":"eternal-feature","title":"永恒之境 · 星蝶护符","image":"astral-charm","product":"astral-charm","sort":20},
+    {"key":"mecha-feature","title":"机甲前线 · 先驱战术装备","image":"vanguard-helmet","product":"vanguard-helmet","sort":30}
+  ]
+}

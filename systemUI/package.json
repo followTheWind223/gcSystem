@@ -1,0 +1,31 @@
+{
+  "name": "gc-system-storefront",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "npm@11.19.0",
+  "engines": { "node": "24.20.0", "npm": "11.19.0" },
+  "scripts": {
+    "dev": "vite",
+    "dev:demo": "vite --mode demo",
+    "dev:api": "vite --mode api",
+    "build": "vite build",
+    "build:demo": "vite build --mode demo",
+    "preview": "vite preview",
+    "test": "node --test tests/*.test.js",
+    "test:e2e": "playwright test",
+    "test:live": "python tests/live/run.py"
+  },
+  "dependencies": {
+    "axios": "1.20.0",
+    "element-plus": "2.13.1",
+    "pinia": "3.0.4",
+    "vue": "3.5.44",
+    "vue-router": "4.6.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.58.2",
+    "@vitejs/plugin-vue": "5.2.4",
+    "vite": "6.4.5"
+  }
+}

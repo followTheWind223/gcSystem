@@ -1,0 +1,529 @@
+{
+  "cases": [
+    {
+      "case": "后台七个真实菜单路由与组件完整",
+      "result": "passed"
+    },
+    {
+      "case": "公开首页",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "分类列表为数组",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "公开分页和白名单排序",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "商品详情及金额字符串",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "公开评价脱敏",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "会员未登录拒绝",
+      "result": "passed",
+      "http": 401
+    },
+    {
+      "case": "后台令牌不能充当会员",
+      "result": "passed",
+      "http": 401
+    },
+    {
+      "case": "会员令牌不能充当后台",
+      "result": "passed",
+      "http": 401
+    },
+    {
+      "case": "后台缺少商城权限",
+      "result": "passed",
+      "http": 403
+    },
+    {
+      "case": "后台分页列表资源路径",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "拒绝数字ID",
+      "result": "passed",
+      "http": 400
+    },
+    {
+      "case": "拒绝越权未知字段",
+      "result": "passed",
+      "http": 400
+    },
+    {
+      "case": "拒绝零数量",
+      "result": "passed",
+      "http": 400
+    },
+    {
+      "case": "必有可空字段不允许遗漏",
+      "result": "passed",
+      "http": 400
+    },
+    {
+      "case": "本人资料修改",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "他人订单统一404",
+      "result": "passed",
+      "http": 404
+    },
+    {
+      "case": "购物车归属校验",
+      "result": "passed",
+      "http": 404
+    },
+    {
+      "case": "购物车实时汇总",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "加购增量合并",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "购物车批量勾选",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "报价来源互斥",
+      "result": "passed",
+      "http": 400
+    },
+    {
+      "case": "不支持的方法返回405",
+      "result": "passed",
+      "http": 405
+    },
+    {
+      "case": "未知资源返回404",
+      "result": "passed",
+      "http": 404
+    },
+    {
+      "case": "请求Content-Type错误返回415",
+      "result": "passed"
+    },
+    {
+      "case": "创建订单幂等重放",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "同键异内容冲突",
+      "result": "passed",
+      "http": 409
+    },
+    {
+      "case": "拒绝前端总金额",
+      "result": "passed",
+      "http": 400
+    },
+    {
+      "case": "模拟失败不改订单",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "模拟成功支付",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "支付重复不增销量",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台登记交付完成",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "交付相同请求幂等",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "本人已完成明细评价",
+      "result": "passed",
+      "http": 201
+    },
+    {
+      "case": "评价唯一约束",
+      "result": "passed",
+      "http": 409
+    },
+    {
+      "case": "后台隐藏评价留原因",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "隐藏不释放评价额度",
+      "result": "passed",
+      "http": 409
+    },
+    {
+      "case": "取消订单回补库存",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "重复取消不重复回补",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "报价变化整单拒绝",
+      "result": "passed",
+      "http": 409
+    },
+    {
+      "case": "后台图片真实上传",
+      "result": "passed",
+      "http": 201
+    },
+    {
+      "case": "公开图片返回二进制",
+      "result": "passed"
+    },
+    {
+      "case": "拒绝伪造图片内容",
+      "result": "passed",
+      "http": 415
+    },
+    {
+      "case": "会员头像上传保存",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "创建分类",
+      "result": "passed",
+      "http": 201
+    },
+    {
+      "case": "创建商品和初始库存流水",
+      "result": "passed",
+      "http": 201
+    },
+    {
+      "case": "富文本允许列表清洗",
+      "result": "passed"
+    },
+    {
+      "case": "乐观锁拒绝旧版本",
+      "result": "passed",
+      "http": 409
+    },
+    {
+      "case": "库存增减独立动作",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "库存调整幂等",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台分类列表",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台分类详情",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台分类更新",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台创建轮播",
+      "result": "passed",
+      "http": 201
+    },
+    {
+      "case": "后台轮播列表",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台轮播详情",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台轮播更新",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台软删除轮播",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台商品详情",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "普通编辑不覆盖库存",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台会员脱敏列表",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台会员详情",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台订单列表",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台订单详情",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台评价列表",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台评价详情",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台库存流水过滤",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "本人订单分页过滤",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "本人订单详情",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "本人评价含隐藏原因",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "过期但尚待任务关闭不能支付",
+      "result": "passed",
+      "http": 409
+    },
+    {
+      "case": "Quartz任务真实触发",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "Quartz关单与回补真实事务",
+      "result": "passed"
+    },
+    {
+      "case": "后台取消订单",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "支付取消并发只能一个状态及一次副作用",
+      "result": "passed"
+    },
+    {
+      "case": "有关联商品不能删分类",
+      "result": "passed",
+      "http": 409
+    },
+    {
+      "case": "人工补货为待支付取消保留回补容量",
+      "result": "passed",
+      "http": 400
+    },
+    {
+      "case": "真实MySQL并发不超卖且失败整单回滚",
+      "result": "passed"
+    },
+    {
+      "case": "后台禁用会员",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "禁用立即使旧会员令牌失效",
+      "result": "passed",
+      "http": 401
+    },
+    {
+      "case": "邮箱发码不在HTTP回显",
+      "result": "passed",
+      "http": 202
+    },
+    {
+      "case": "邮箱验证注册独立会员",
+      "result": "passed",
+      "http": 201
+    },
+    {
+      "case": "邮箱码单次消费",
+      "result": "passed",
+      "http": 400
+    },
+    {
+      "case": "修改密码",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "改密撤销全部旧会话",
+      "result": "passed",
+      "http": 401
+    },
+    {
+      "case": "重置邮箱码绑定独立场景",
+      "result": "passed",
+      "http": 202
+    },
+    {
+      "case": "邮箱验证找回密码",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台独立下架",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "后台商品软删除",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "移除商品后分类软删除",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "购物车绝对数量修改",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "移除本人购物车条目",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "重复移除购物车幂等",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "会员退出当前会话",
+      "result": "passed",
+      "http": 200
+    },
+    {
+      "case": "退出后令牌不可复用",
+      "result": "passed",
+      "http": 401
+    },
+    {
+      "case": "浏览器路由、操作区及真实列表：游戏分类",
+      "result": "passed"
+    },
+    {
+      "case": "浏览器路由、操作区及真实列表：道具商品",
+      "result": "passed"
+    },
+    {
+      "case": "浏览器路由、操作区及真实列表：首页轮播",
+      "result": "passed"
+    },
+    {
+      "case": "浏览器路由、操作区及真实列表：商城会员",
+      "result": "passed"
+    },
+    {
+      "case": "浏览器路由、操作区及真实列表：商城订单",
+      "result": "passed"
+    },
+    {
+      "case": "浏览器路由、操作区及真实列表：商品评价",
+      "result": "passed"
+    },
+    {
+      "case": "浏览器路由、操作区及真实列表：库存流水",
+      "result": "passed"
+    },
+    {
+      "case": "浏览器分类新增、修改及删除完整闭环",
+      "result": "passed"
+    },
+    {
+      "case": "浏览器商品图片上传、创建及库存调整闭环",
+      "result": "passed"
+    },
+    {
+      "case": "浏览器订单交付、状态刷新和详情查看",
+      "result": "passed"
+    },
+    {
+      "case": "七页及操作闭环无浏览器脚本异常",
+      "result": "passed"
+    }
+  ],
+  "passedCases": 106,
+  "liveResponseSchemaChecks": 108,
+  "isolatedDatabaseCleaned": true,
+  "isolatedRedisDbCleaned": true,
+  "applicationDatabaseModified": false,
+  "verifiedAt": "2026-10-22T22:26:55.259845+08:00",
+  "java": "17.0.7",
+  "mysql": "8.3.0",
+  "contractVersion": "2.0.0",
+  "serviceBoundaryAndTransactionUnitTests": 4,
+  "mavenPackage": "passed",
+  "adminProductionBuild": "passed",
+  "smtpExternalDelivery": "not exercised; local dev file mail adapter verified"
+}

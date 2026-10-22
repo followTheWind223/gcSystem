@@ -1,0 +1,7 @@
+PyMySQL==1.1.2
+requests==2.32.5
+Pillow==11.3.0
+PyYAML==6.0.3
+openapi-schema-validator==0.6.3
+openapi-spec-validator==0.7.2
+playwright==1.56.0
