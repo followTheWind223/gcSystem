@@ -1,0 +1,32 @@
+# Dependencies and build output
+**/node_modules/
+**/dist/
+**/target/
+**/.vite/
+**/coverage/
+
+# Local environment and private configuration; keep examples versioned
+.env
+.env.*
+!.env.example
+!.env.*.example
+**/application-local.yml
+**/application-local.yaml
+**/application-local.properties
+**/application-secrets.*
+
+# Runtime files
+*.log
+**/logs/
+**/uploads/
+**/upload/
+*.pid
+
+# Developer-specific files
+.idea/
+*.iml
+.codex/
+.agents/
+.DS_Store
+Thumbs.db
+~$*
