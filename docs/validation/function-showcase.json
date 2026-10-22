@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-23",
+  "document": "D:\\游戏商城系统\\gcSystem\\docs\\功能展示\\游戏道具商城功能展示.docx",
+  "pages": 30,
+  "functionalItems": 29,
+  "embeddedScreenshots": 30,
+  "allPageTitlesMatchManifest": true,
+  "changedPagesAfterFinalCorrections": [
+    6,
+    14,
+    24
+  ],
+  "visualReview": "passed: all 30 pages inspected; 3 corrected pages re-rendered and inspected; other 27 page images unchanged",
+  "nativeRenderer": "Microsoft Word 16 PDF export and documents render_docx.py PNG rasterization",
+  "applicationDatabaseModified": false,
+  "isolatedCaptureResourcesCleaned": true,
+  "bytes": 12868100,
+  "sha256": "3ffd465978c14f1c3cb93034ecfb99844ea6d4b4cf80be34f2b4d62406c30820"
+}
