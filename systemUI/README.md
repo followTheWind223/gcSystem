@@ -1,4 +1,4 @@
-# gameshop · 商城用户端
+# gc-shop · 商城用户端
 
 独立 Vue 3 游戏道具商城。技术栈：Vue 3、Vite、JavaScript、Vue Router 4、Pinia、Axios、Element Plus。界面采用炭黑与青绿色，使用本地原创游戏道具素材，适配桌面和手机。
 

@@ -24,7 +24,7 @@
 - 已导入 RuoYi-Vue `springboot3` 后端及官方 RuoYi-Vue3 管理端，完整来源/提交/许可证见 [上游源码记录](./docs/上游源码记录.md)。商城 `systemUI` 已由独立任务实现，接续状态与约束见其目录内 AGENTS.md。
 - 当前分支 `main`，`origin` 指向 `https://github.com/followTheWind223/gcSystem.git`。已配置后端私密 `.env`、环境分组、管理端代理、Maven Wrapper、Node/npm 版本与锁文件。
 - 本机新建 `gc_system`，空库内导入两份若依 SQL，共 31 张表。后端 JDK 17 构建/启动、管理端锁文件安装/生产构建、经代理验证码/登录/菜单/退出/图片访问均通过。依赖签名通过；仍有 11 项 npm 审计告警，影响判断与保留原因见 [环境配置与验证](./docs/环境配置与验证.md)。
-- 已实现独立 gameshop 模块和 63 个商城操作，按 Controller → Service/impl → Mapper/XML 分层，DTO、Command/BO、Query、Entity、Result、VO 独立文件并显式转换。商城用户端 systemUI 仍由用户另开的任务开发，本次没有改动。
+- 已实现独立 gc-shop 模块和 63 个商城操作，按 Controller → Service/impl → Mapper/XML 分层，DTO、Command/BO、Query、Entity、Result、VO 独立文件并显式转换。商城用户端 systemUI 仍由用户另开的任务开发，本次没有改动。
 - 已备份应用库并应用 V001–V003：gc_system 从 31 表增至 46 表，其中 15 张 mall_*；V002 注册 Quartz 关单任务，V003 注册七个后台页面、路由及按钮权限；没有向应用库导入 D001 演示业务数据。
 - REST 契约 2.2.0：29 个用户端、34 个后台商城、6 个若依操作；587 个 DTO 属性有来源，622 个响应示例及 39 个 Mock 场景。删除后台 /list，认证、报价、支付和取消等改为资源路径；前端必须看 [REST 迁移说明](./docs/api/REST迁移说明.md)。
 - 后台八页已接真实 API，含顶部操作区、行操作、搜索、分页、表单、详情和业务动作。106 个隔离 HTTP/浏览器用例、108 次真实响应 Schema 校验通过；真实 MySQL 验证了库存竞争、支付取消竞争、幂等、归属及 Quartz 关单，详见 [验收记录](./docs/后端与后台验收.md)。
@@ -44,7 +44,7 @@
 3. 管理端选官方 RuoYi-Vue3，商城独立 Vue 3 + Vite；两端默认 JavaScript、Vue Router 4、Pinia、Axios、Element Plus。如要改 TypeScript，先记录选择并配套初始化，不临时混用模板。
 4. 管理端固定 Node.js 24.20.0、npm 11.19.0，提交 `package-lock.json`；后端 Maven Wrapper 固定 Maven 3.9.10。商城初始化时沿用经验证的版本。npm 默认 `ignore-scripts=true`，新增确需安装脚本的依赖时先审查，不整体开启。
 5. 为减少二开成本，首版沿用若依 MyBatis，不默认引入原文中的 MyBatis-Plus。若其为课程硬性要求，应在 S0 修改设计和依赖决策。
-6. 保留若依核心模块及基础包名，业务模块按用户指令命名 `gameshop`，包为 `com.ruoyi.gameshop`。严格分开请求 DTO、业务 Command/BO、查询 Query、持久化 Entity、业务 Result 和响应 VO，禁止同一个实体贯穿所有层。
+6. 按 2026-10-23 用户明确指令，六个基础模块统一为 `gc-*`，业务模块为 `gc-shop`，Maven groupId/Java 包前缀统一为 `com.gc`，商城包为 `com.gc.gameshop`。严格分开请求 DTO、业务 Command/BO、查询 Query、持久化 Entity、业务 Result 和响应 VO，禁止同一个实体贯穿所有层。
 7. 业务遵循 Controller → Service → Mapper。事务放在 Service；Controller 不直接操作数据库，基础框架模块不反向依赖商城，禁止形成模块循环。
 8. 普通 CRUD 可使用若依生成器；订单、支付、库存与认证逻辑必须单独设计和审查，不能由生成的通用更新接口替代。
 9. 源码导入时保留上游许可证并记录仓库、分支、commit、日期；不得无必要地覆盖现有文件或引入嵌套 Git 仓库。
@@ -122,6 +122,9 @@
 
 ### 最近记录
 
+- 2026-10-23：按用户明确指令，六个若依模块改为 `gc-*`，商城模块为 `gc-shop`，Java/Maven 包前缀为 `com.gc`。Git 重构前完整备份 `60f6815`，分支 `backup/pre-gc-refactor-20261023`；本地提交，未推送。启动 jar 为 `system/gc-admin/target/gc-admin.jar`，IDE 启动类 `com.gc.RuoYiApplication`，工作目录 `system`。兼容旧 Redis 类型标记，SQL 快照无需改写。全工程构建/7项Java检查、40项真实认证检查、两端浏览器、81项旧快照/会话/Quartz升级验证及管理端构建通过，8080 已运行新 jar。详情见 [重构说明](./docs/模块与包名重构.md)。
+
+
 | 日期 | 类型 | 内容 | 下一步 |
 | --- | --- | --- | --- |
 | 2026-10-22 | 规划完成 | 已梳理原始 `.doc`，建立架构与开发流程；技术/业务默认方案详见设计文档；尚无代码与构建验证 | S0：固定若依 Boot 3/Vue3 基线，初始化工程并验证双端代理和后台登录 |
@@ -149,3 +152,5 @@
 | 2026-10-23 | 游戏区服 | V006按游戏区服配置、后台八页及结算下拉选择、订单快照；已备份迁移，后端8080已重启；接口2.2.0及验证已同步 | 刷新后台菜单进入游戏区服，修改默认一区/二区/三区为实际游戏配置；未提交推送 |
 
 - 2026-10-23 用户要求后台不再显示部门相关前端：用户页移除组织树、筛选、列表列和关联表单；详情、个人中心、公告已读列表、日志与在线页移除相关展示。删除已撤销菜单对应的前端页面/API，角色数据范围仅显示全部/本人，旧范围未修改时保留。前端不请求部门树；后端基础数据及关联保持。8 项只读浏览器检查通过，详见 docs/validation/admin-no-department-ui.json；不得恢复相关入口。
+
+- 2026-10-23 按用户要求制作功能展示Word：docs/功能展示/游戏道具商城功能展示.docx，A4横向30页，涵盖用户端与后台29个功能项、30张实际页面截图及说明/操作入口。截图使用临时隔离库和Redis，完成后均清理，未写应用业务库；以3.0.0/V007统一账号和当前前端为准。通过本机Word导出并逐页检查，记录见 docs/validation/function-showcase.json；截图及构建脚本在仓库外 .work/function-showcase。

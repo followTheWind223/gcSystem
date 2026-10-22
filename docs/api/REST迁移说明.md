@@ -1,6 +1,6 @@
 # REST 接口 2.0.0 路径迁移
 
-本版按用户要求在独立 gameshop 模块实现；保持 operationId 和业务 DTO，修改以下路径/方法。用户端与后台必须同步，不提供会混淆语义的旧动作别名。
+本版按用户要求在独立 gc-shop 模块实现；保持 operationId 和业务 DTO，修改以下路径/方法。用户端与后台必须同步，不提供会混淆语义的旧动作别名。
 
 | operationId | 1.1.0 | 2.0.0 |
 | --- | --- | --- |
@@ -26,4 +26,4 @@
 
 后台图片创建返回 201 和 Location；新增 405/406/415 的协议错误码，错误 HTTP 与 body.code 一致。其余 JSON 外壳、字段、金额字符串、ID 字符串与幂等语义保持。
 
-结构字段仍对应 V001；V002 只注册 Quartz 关单任务，不改字段。实现与验证见 [gameshop 模块](../../system/gameshop/README.md)。
+结构字段仍对应 V001；V002 只注册 Quartz 关单任务，不改字段。实现与验证见 [gc-shop 模块](../../system/gc-shop/README.md)。

@@ -2,7 +2,7 @@
 
 用户端和管理端共用若依原生登录/注册。新账号默认普通用户 common，仅可使用商城；后台页面与接口均限制访问。原商城账号已经迁移到 sys_user，保留密码和交易归属。详见 [统一认证与权限](./docs/api/若依统一认证.md)。
 
-虚拟游戏道具商城课程项目，采用前后端分离。若依 Spring Boot 3 后端已实现独立 gameshop 模块及 57 个商城业务接口，认证复用若依原生接口；管理端八个页面已接入真实接口，商城用户端位于 systemUI。
+虚拟游戏道具商城课程项目，采用前后端分离。若依 Spring Boot 3 后端已实现独立 gc-shop 模块及 57 个商城业务接口，认证复用若依原生接口；管理端八个页面已接入真实接口，商城用户端位于 systemUI。
 
 ## 项目结构
 
@@ -20,6 +20,10 @@ gcSystem/
 按本次用户指令，后端目录由 `gsSystem` 调整为 `system`，管理端由 `gsSystemAdminUI` 调整为 `adminsystemui`。源码导入时排除了上游 `.git`，许可证分别保留在两工程的 `LICENSE`。
 
 用户端工程目录当前为 `systemUI`，替代原 `gsSystemUI`；用户端交接与工程初始化都使用当前目录。
+
+后端模块已统一为 `gc-admin`、`gc-common`、`gc-framework`、`gc-generator`、`gc-quartz`、`gc-system`、`gc-shop`；父 Maven 坐标为 `com.gc:gc:3.9.2`，Java 包前缀为 `com.gc`，商城业务包为 `com.gc.gameshop`。可执行文件为 `system/gc-admin/target/gc-admin.jar`，启动类为 `com.gc.RuoYiApplication`。IDE 重新加载 `system/pom.xml`，运行配置的工作目录设为 `system`。
+
+本次重构前的完整 Git 备份为 `60f6815`，分支 `backup/pre-gc-refactor-20261023`。模块改名无需数据库结构迁移；现有 SQL 快照仍可恢复，旧 Redis 登录及字典类型有兼容读取。详见 [模块与包名重构说明](./docs/模块与包名重构.md)。
 
 ## 环境与启动
 
@@ -86,13 +90,15 @@ SOURCE D:/游戏商城系统/gcSystem/sql/gc_system_full.sql;
 
 ## 当前开发范围
 
-已实现若依统一认证、商品、门户、图片、购物车、报价、订单、模拟支付、取消/超时关单、交付、评价及后台管理。业务位于 [gameshop 模块](./system/gameshop/README.md)，按 Controller/Service/Mapper 分层，DTO/BO/Query/Entity/Result/VO 分离。管理端“游戏商城”下有分类、商品、轮播、会员、订单、评价、库存流水及游戏区服八页，包含实际操作区与权限按钮。
+已实现若依统一认证、商品、门户、图片、购物车、报价、订单、模拟支付、取消/超时关单、交付、评价及后台管理。业务位于 [gc-shop 模块](./system/gc-shop/README.md)，按 Controller/Service/Mapper 分层，DTO/BO/Query/Entity/Result/VO 分离。管理端“游戏商城”下有分类、商品、轮播、会员、订单、评价、库存流水及游戏区服八页，包含实际操作区与权限按钮。
 
 应用库已备份并应用 V001–V007，当前共 47 表；没有导入演示订单或会员。后台首页已替换为真实数据的商城工作台，登录页、标识、默认公告和菜单均已商城化。已按用户要求移除部门/岗位、系统监控、系统工具及其后代菜单和路由。登录后台后刷新菜单即可进入 `/gameshop/props` 等页面，创建商品前先创建分类并上传图片。当前契约为 3.0.0，对接前查看[路径迁移对照](./docs/api/REST迁移说明.md)。验证范围见[后端与后台验收](./docs/后端与后台验收.md)。
 
 已按用户授权加入 3 个游戏分类、6 件商品和 3 条轮播，7 张图片实际存储在后端 `system/data/uploads/mall`，统一通过 `/api/mall/media/{fileName}` 读取。后台有缩略图与预览；刷新 [商城](http://127.0.0.1:5173) 或 [商品管理](http://127.0.0.1:5174/gameshop/props) 即可查看。[素材、生成提示与可重复导入说明](./system/assets/display-catalog/README.md)随工程保存。
 
 ## 文档
+
+- [功能展示 Word 文档](./docs/功能展示/游戏道具商城功能展示.docx)：30页，含用户端与后台29个功能项、30张真实页面截图、功能说明和操作入口。
 
 - [数据库设计与字段字典](./docs/database/README.md)：V001 结构、14 张业务表、1 张版本表、169 字段；V002 关单任务、V003 后台路由及权限、V004 默认展示、V005 菜单精简已应用到开发库。
 - [商城接口设计](./docs/api/README.md)：契约 3.0.0；[用户端详细接口](./docs/api/用户端接口详细说明.md)和[管理端详细接口](./docs/api/管理端接口详细说明.md)逐项列出请求/返回字段及完整成功、失败 JSON，含 OpenAPI 和 Mock 示例。

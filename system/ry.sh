@@ -1,11 +1,13 @@
 #!/bin/sh
 # ./ry.sh start 启动 stop 停止 restart 重启 status 状态
-AppName=ruoyi-admin.jar
+APP_HOME=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) || exit 1
+cd "$APP_HOME" || exit 1
+AppName=gc-admin/target/gc-admin.jar
 
 # JVM参数
-JVM_OPTS="-Dname=$AppName  -Duser.timezone=Asia/Shanghai -Xms512m -Xmx1024m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -XX:+PrintGCDateStamps  -XX:+PrintGCDetails -XX:NewRatio=1 -XX:SurvivorRatio=30 -XX:+UseParallelGC -XX:+UseParallelOldGC"
-APP_HOME=`pwd`
-LOG_PATH=$APP_HOME/logs/$AppName.log
+JVM_OPTS="-Dname=$AppName  -Duser.timezone=Asia/Shanghai -Xms512m -Xmx1024m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -XX:NewRatio=1 -XX:SurvivorRatio=30 -XX:+UseParallelGC"
+LOG_PATH=$APP_HOME/logs/gc-admin.log
+mkdir -p "$APP_HOME/logs"
 
 if [ "$1" = "" ];
 then
@@ -19,19 +21,19 @@ then
     exit 1
 fi
 
-function start()
+start()
 {
     PID=`ps -ef |grep java|grep $AppName|grep -v grep|awk '{print $2}'`
 
 	if [ x"$PID" != x"" ]; then
 	    echo "$AppName is running..."
 	else
-		nohup java $JVM_OPTS -jar $AppName > /dev/null 2>&1 &
+		nohup java $JVM_OPTS -jar "$AppName" >> "$LOG_PATH" 2>&1 &
 		echo "Start $AppName success..."
 	fi
 }
 
-function stop()
+stop()
 {
     echo "Stop $AppName"
 
@@ -55,14 +57,14 @@ function stop()
 	fi
 }
 
-function restart()
+restart()
 {
     stop
     sleep 2
     start
 }
 
-function status()
+status()
 {
     PID=`ps -ef |grep java|grep $AppName|grep -v grep|wc -l`
     if [ $PID != 0 ];then

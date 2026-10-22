@@ -1,0 +1,3 @@
+# Keep Unix entrypoints runnable when the project is checked out on Windows.
+*.sh text eol=lf
+system/mvnw text eol=lf

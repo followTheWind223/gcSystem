@@ -12,11 +12,11 @@ if (-not (Test-Path -LiteralPath $javaCommand)) {
 
 Push-Location $PSScriptRoot
 try {
-    if ($Build -or -not (Test-Path -LiteralPath 'ruoyi-admin\target\ruoyi-admin.jar')) {
+    if ($Build -or -not (Test-Path -LiteralPath 'gc-admin\target\gc-admin.jar')) {
         & .\mvnw.cmd -B clean package
         if ($LASTEXITCODE -ne 0) { throw 'Maven build failed.' }
     }
-    & $javaCommand '-Duser.timezone=Asia/Shanghai' -jar ruoyi-admin/target/ruoyi-admin.jar
+    & $javaCommand '-Duser.timezone=Asia/Shanghai' -jar gc-admin/target/gc-admin.jar
     exit $LASTEXITCODE
 } finally {
     Pop-Location

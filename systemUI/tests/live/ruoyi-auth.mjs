@@ -48,7 +48,7 @@ try {
   await page.getByRole('button', { name: '登 录', exact: true }).click()
   await expect(page).toHaveURL(origin + '/')
   await expect(page.locator('.user-menu-trigger')).toBeVisible().catch(async () => { await expect(page.getByRole('link', { name: '购物车', exact: true })).toBeVisible() })
-  await page.screenshot({ path: join(out, 'ruoyi-admin-storefront.png') })
+  await page.screenshot({ path: join(out, 'gc-admin-storefront.png') })
   expect(paths).toContain('/api/auth/register')
   expect(paths).toContain('/api/auth/login')
   expect(paths).toContain('/api/auth/getInfo')

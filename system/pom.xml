@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-    <groupId>com.ruoyi</groupId>
-    <artifactId>ruoyi</artifactId>
+    <groupId>com.gc</groupId>
+    <artifactId>gc</artifactId>
     <version>3.9.2</version>
 
-    <name>ruoyi</name>
-    <url>http://www.ruoyi.vip</url>
-    <description>若依管理系统</description>
+    <name>gc</name>
+    <url>https://github.com/followTheWind223/gcSystem</url>
+    <description>游戏商城系统</description>
     
     <properties>
-        <ruoyi.version>3.9.2</ruoyi.version>
+        <gc.version>3.9.2</gc.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
@@ -137,50 +137,50 @@
 
             <!-- 定时任务-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-quartz</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.gc</groupId>
+                <artifactId>gc-quartz</artifactId>
+                <version>${gc.version}</version>
             </dependency>
 
             <!-- 代码生成-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-generator</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.gc</groupId>
+                <artifactId>gc-generator</artifactId>
+                <version>${gc.version}</version>
             </dependency>
 
             <!-- 核心模块-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-framework</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.gc</groupId>
+                <artifactId>gc-framework</artifactId>
+                <version>${gc.version}</version>
             </dependency>
 
             <!-- 系统模块-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-system</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.gc</groupId>
+                <artifactId>gc-system</artifactId>
+                <version>${gc.version}</version>
             </dependency>
 
             <!-- 通用工具-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-common</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.gc</groupId>
+                <artifactId>gc-common</artifactId>
+                <version>${gc.version}</version>
             </dependency>
 
         </dependencies>
     </dependencyManagement>
 
     <modules>
-        <module>ruoyi-admin</module>
-        <module>ruoyi-framework</module>
-        <module>ruoyi-system</module>
-        <module>ruoyi-quartz</module>
-        <module>ruoyi-generator</module>
-        <module>ruoyi-common</module>
-        <module>gameshop</module>
+        <module>gc-admin</module>
+        <module>gc-framework</module>
+        <module>gc-system</module>
+        <module>gc-quartz</module>
+        <module>gc-generator</module>
+        <module>gc-common</module>
+        <module>gc-shop</module>
     </modules>
     <packaging>pom</packaging>
 

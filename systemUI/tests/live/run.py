@@ -128,7 +128,7 @@ def run(email_policy=None, ruoyi_auth=False):
         java = Path(backend_env.get('JAVA_HOME', 'D:/java')) / 'bin/java.exe'
         with (artifacts / 'backend.log').open('w', encoding='utf-8') as log:
             backend = subprocess.Popen([str(java), '-Duser.timezone=Asia/Shanghai', '-jar',
-                os.environ.get('MALL_TEST_JAR', str(SYSTEM / 'ruoyi-admin/target/ruoyi-admin.jar'))], cwd=SYSTEM, env=backend_env,
+                os.environ.get('MALL_TEST_JAR', str(SYSTEM / 'gc-admin/target/gc-admin.jar'))], cwd=SYSTEM, env=backend_env,
                 stdout=log, stderr=subprocess.STDOUT, creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
             children.append(backend)
         for attempt in range(120):

@@ -1,3 +1,5 @@
+> 本项目后端模块为 gc-admin、gc-common、gc-framework、gc-generator、gc-quartz、gc-system、gc-shop，Java 包前缀为 com.gc。构建启动见 [项目 README](../README.md)；以下保留上游项目说明与来源。
+
 <p align="center">
 	<img alt="logo" src="https://oscimg.oschina.net/oscnet/up-d3d0a9303e11d522a06cd263f3079027715.png">
 </p>
